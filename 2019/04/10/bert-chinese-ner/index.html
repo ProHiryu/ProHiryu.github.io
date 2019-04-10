@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/5.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/5.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/5.png?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'NXQ581EXU0',
+      apiKey: '9deb5a16a20b7c66b1ef0c8bd12043c7',
+      indexName: 'shq',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="代码地址：bert-chinese-ner 论文地址：Bert  代码其实是去年十一月的Bert刚出来大火的时候写的，想起来也应该总结一下BERT的整体框架和微调思路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bert语言模型fine-tune微调做中文NER命名实体识别">
+<meta property="og:url" content="https://prohiryu.github.io/2019/04/10/bert-chinese-ner/index.html">
+<meta property="og:site_name" content="Sic transit gloria mundi">
+<meta property="og:description" content="代码地址：bert-chinese-ner 论文地址：Bert  代码其实是去年十一月的Bert刚出来大火的时候写的，想起来也应该总结一下BERT的整体框架和微调思路">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-04-10T13:46:47.102Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bert语言模型fine-tune微调做中文NER命名实体识别">
+<meta name="twitter:description" content="代码地址：bert-chinese-ner 论文地址：Bert  代码其实是去年十一月的Bert刚出来大火的时候写的，想起来也应该总结一下BERT的整体框架和微调思路">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://prohiryu.github.io/2019/04/10/bert-chinese-ner/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Bert语言模型fine-tune微调做中文NER命名实体识别 | Sic transit gloria mundi</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sic transit gloria mundi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Welcome</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://prohiryu.github.io/2019/04/10/bert-chinese-ner/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Augustus">
+      <meta itemprop="description" content="The rest is silence">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sic transit gloria mundi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Bert语言模型fine-tune微调做中文NER命名实体识别
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-10 21:43:05 / 修改时间：21:46:47" itemprop="dateCreated datePublished" datetime="2019-04-10T21:43:05+08:00">2019-04-10</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>代码地址：<a href="https://github.com/ProHiryu/bert-chinese-ner" target="_blank" rel="noopener">bert-chinese-ner</a></li>
+<li>论文地址：<a href="https://arxiv.org/abs/1810.04805" target="_blank" rel="noopener">Bert</a></li>
+</ul>
+<p>代码其实是去年十一月的Bert刚出来大火的时候写的，想起来也应该总结一下BERT的整体框架和微调思路</p>
+<a id="more"></a>
+<h1 id="Bert"><a href="#Bert" class="headerlink" title="Bert"></a>Bert</h1><h2 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h2><p>NLP技术已经发展了几十年，当深度神经网络进入到这个领域的时候，RNN/LSTM/GRU都各自掀起过一场浪潮，CNN目前也有自成一派的趋势，但是去年Google Research这一篇论文又重新把他们之前提出的Transformer这个基础模型框架重新放在了大家面前</p>
+<p>其实从实际经验出发，虽然有各路大牛都在推荐Transformer，RNN-based model还是NLP工程当中的首选，可能是基于以下原因：</p>
+<ul>
+<li>Transformer 基于注意力机制擅长于抓取长句子长段落当中的信息，然而非常多的NLP工程任务如聊天机器人并不需要如此长篇大论的对话，反而效果会差</li>
+<li>Transformer 需要有良好效果目前来看最好是有多层的叠加，这回导致训练资源开销很大，负担不起</li>
+</ul>
+<p>当然这里不讨论其他框架的效果和实际使用</p>
+<p>关于Transformer架构的详解，网上已经有了非常多很好的文章，推荐<a href="https://zhuanlan.zhihu.com/p/39034683" target="_blank" rel="noopener">知乎</a>的这篇文章，注意以下几个点即可：</p>
+<ul>
+<li>实际的multi-head attention其实不用掌握那么详细，但是必须要知道其本身完全利用注意力来实现</li>
+<li>每一层Encoder和Decoder内部都是使用multi-head attention以及残差网络来构造</li>
+<li>Encoder和Decoder之间的联系同样也是通过multi-head attention来构造</li>
+</ul>
+<h2 id="Bert-1"><a href="#Bert-1" class="headerlink" title="Bert"></a>Bert</h2><p>Bert是由12层双向Transformer搭建而来，同样关于Bert推荐<a href="https://zhuanlan.zhihu.com/p/46652512" target="_blank" rel="noopener">知乎</a>另一篇文章，同样注意以下几个点即可：</p>
+<ul>
+<li>原论文中关于英文的模型是使用三种词向量相加而成的embedding，而中文是没有分词这个操作的，使用的是字向量</li>
+<li>BERT以 $P(w_i|w_1,  …,w_{i-1}, w_{i+1},…,w_n)$作为目标函数训练LM</li>
+<li>普通的分类任务使用第一个[CLS]token的final hidden state来预测，大部分常见的微调都是使用这种方式，当然可以修改为获取最后一层的所有参数做max-pool</li>
+</ul>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><h2 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h2><p>进行NER任务，选取经典的BIO标注数据，总共有三类实体，人物，地点，组织。那么对于Bert模型来说需要进行的分类一共有</p>
+<ul>
+<li>“O”</li>
+<li>“B-PER”</li>
+<li>“I-PER”</li>
+<li>“B-ORG”</li>
+<li>“I-ORG”</li>
+<li>“B-LOC”</li>
+<li>“I-LOC”</li>
+<li>“[CLS]”</li>
+<li>“[SEP]”</li>
+</ul>
+<p>其中CLS和SEP是Bert数据组织的必备token，关于这个X的含义，已经在GitHub上有很多人问过我了，这是由于在做英文tokenize分词处理的时候有可能会出现[“do”, “ing”]这种情况，这时候为了避免冗余，tag只会加到第一个词上，所以后面的都使用X这个label来表示，不过由于中文当中并不会出现这种情况，最新的代码已经去掉了X这一label</p>
+<p>然后根据bert当中本身自带的数据处理参考代码，跟所有NLP工程一样，将文本转化为token和label的id组合即可，详细代码参考项目。这里不得不说一句Google真是越活越回去了，不求使用keras这种更高层的API，也不需要使用Estimator这种这么底层的东西吧，确实更加精细和精巧，但真是不方便</p>
+<h2 id="模型构建"><a href="#模型构建" class="headerlink" title="模型构建"></a>模型构建</h2><p>真正到了模型最关键的地方反而没有什么可以赘述的了，所有的微调基本都在两层的MLP网络以内，跑起来速度也是很快的，这里我们直接使用一层网络接上softmax即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_model</span><span class="params">(bert_config, is_training, input_ids, input_mask,</span></span></span><br><span class="line"><span class="function"><span class="params">                 segment_ids, labels, num_labels, use_one_hot_embeddings)</span>:</span></span><br><span class="line">    model = modeling.BertModel(</span><br><span class="line">        config=bert_config,</span><br><span class="line">        is_training=is_training,</span><br><span class="line">        input_ids=input_ids,</span><br><span class="line">        input_mask=input_mask,</span><br><span class="line">        token_type_ids=segment_ids,</span><br><span class="line">        use_one_hot_embeddings=use_one_hot_embeddings</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    output_layer = model.get_sequence_output()</span><br><span class="line"></span><br><span class="line">    hidden_size = output_layer.shape[<span class="number">-1</span>].value</span><br><span class="line"></span><br><span class="line">    output_weight = tf.get_variable(</span><br><span class="line">        <span class="string">"output_weights"</span>, [num_labels, hidden_size],</span><br><span class="line">        initializer=tf.truncated_normal_initializer(stddev=<span class="number">0.02</span>)</span><br><span class="line">    )</span><br><span class="line">    output_bias = tf.get_variable(</span><br><span class="line">        <span class="string">"output_bias"</span>, [num_labels], initializer=tf.zeros_initializer()</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">with</span> tf.variable_scope(<span class="string">"loss"</span>):</span><br><span class="line">        <span class="keyword">if</span> is_training:</span><br><span class="line">            output_layer = tf.nn.dropout(output_layer, keep_prob=<span class="number">0.9</span>)</span><br><span class="line">        output_layer = tf.reshape(output_layer, [<span class="number">-1</span>, hidden_size])</span><br><span class="line">        logits = tf.matmul(output_layer, output_weight, transpose_b=<span class="literal">True</span>)</span><br><span class="line">        logits = tf.nn.bias_add(logits, output_bias)</span><br><span class="line">        logits = tf.reshape(logits, [<span class="number">-1</span>, FLAGS.max_seq_length, <span class="number">10</span>])</span><br><span class="line">        log_probs = tf.nn.log_softmax(logits, axis=<span class="number">-1</span>)</span><br><span class="line">        one_hot_labels = tf.one_hot(labels, depth=num_labels, dtype=tf.float32)</span><br><span class="line">        per_example_loss = -tf.reduce_sum(one_hot_labels * log_probs, axis=<span class="number">-1</span>)</span><br><span class="line">        loss = tf.reduce_sum(per_example_loss)</span><br><span class="line">        probabilities = tf.nn.softmax(logits, axis=<span class="number">-1</span>)</span><br><span class="line">        predict = tf.argmax(probabilities,axis=<span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> (loss, per_example_loss, logits,predict)</span><br></pre></td></tr></table></figure>
+<p>GitHub上已经有人实现了后面接上BiLSTM-CRF进行NER任务了，效果非常好，但是由于我的时间和计算资源有限，而且光是微调的效果就已经足够好了，故而没有进行尝试，有兴趣的同学可以去看看，同时包括Transformer XL这个号称inference速度提升很多的模型，也是很方便用来做fine-tune的</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>eval的效果达到了95%以上，当然我知道实际使用的话必然达不到这个效果，但是90%+肯定是可以做到的，Bert的魅力在于里面的所有概念甚至都可以称之为冷饭，然而冷饭翻炒确实很香，但是在资源不够的情况下如何把顶尖的实验室产品工程化确实是一道难题</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/14/hackintosh/" rel="next" title="7700k + z270 ar + 华硕 ROG 1070 O8G 安装黑苹果过程">
+                <i class="fa fa-chevron-left"></i> 7700k + z270 ar + 华硕 ROG 1070 O8G 安装黑苹果过程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Augustus">
+            
+              <p class="site-author-name" itemprop="name">Augustus</p>
+              <div class="site-description motion-element" itemprop="description">The rest is silence</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">41</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ProHiryu" title="GitHub &rarr; https://github.com/ProHiryu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:songheqi1996@gmail.com" title="E-Mail &rarr; mailto:songheqi1996@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://weibo.com/Pro-Zero" title="Weibo &rarr; http://weibo.com/Pro-Zero" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/Pro_Zero" title="Twitter &rarr; https://twitter.com/Pro_Zero" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Bert"><span class="nav-number">1.</span> <span class="nav-text">Bert</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Transformer"><span class="nav-number">1.1.</span> <span class="nav-text">Transformer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bert-1"><span class="nav-number">1.2.</span> <span class="nav-text">Bert</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Code"><span class="nav-number">2.</span> <span class="nav-text">Code</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据准备"><span class="nav-number">2.1.</span> <span class="nav-text">数据准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型构建"><span class="nav-number">2.2.</span> <span class="nav-text">模型构建</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-number">3.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Augustus</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
