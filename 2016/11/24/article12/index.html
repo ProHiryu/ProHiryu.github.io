@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'NXQ581EXU0',
+      apiKey: '9deb5a16a20b7c66b1ef0c8bd12043c7',
+      indexName: 'shq',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Game Prediction System Part 1Data RetrievingData Source and version control Data Source BeautifulSoup4 Python35 selenium geckodriver DB browser   crawler with PyQt and BS4 BeautifulSoup is just a Web">
+<meta name="keywords" content="python,machine learning,databases,beautifulsoup,sqlite">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Game Prediction System Part 1">
+<meta property="og:url" content="https://prohiryu.github.io/2016/11/24/article12/index.html">
+<meta property="og:site_name" content="Sic transit gloria mundi">
+<meta property="og:description" content="Game Prediction System Part 1Data RetrievingData Source and version control Data Source BeautifulSoup4 Python35 selenium geckodriver DB browser   crawler with PyQt and BS4 BeautifulSoup is just a Web">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-05-05T07:20:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Game Prediction System Part 1">
+<meta name="twitter:description" content="Game Prediction System Part 1Data RetrievingData Source and version control Data Source BeautifulSoup4 Python35 selenium geckodriver DB browser   crawler with PyQt and BS4 BeautifulSoup is just a Web">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://prohiryu.github.io/2016/11/24/article12/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Game Prediction System Part 1 | Sic transit gloria mundi</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sic transit gloria mundi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://prohiryu.github.io/2016/11/24/article12/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Augustus">
+      <meta itemprop="description" content="The rest is silence">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sic transit gloria mundi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Game Prediction System Part 1
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-24 18:06:07" itemprop="dateCreated datePublished" datetime="2016-11-24T18:06:07+08:00">2016-11-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2017-05-05 15:20:04" itemprop="dateModified" datetime="2017-05-05T15:20:04+08:00">2017-05-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Game-Prediction/" itemprop="url" rel="index"><span itemprop="name">Game Prediction</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Game-Prediction-System-Part-1"><a href="#Game-Prediction-System-Part-1" class="headerlink" title="Game Prediction System Part 1"></a><strong>Game Prediction System Part 1</strong></h1><h2 id="Data-Retrieving"><a href="#Data-Retrieving" class="headerlink" title="Data Retrieving"></a><strong>Data Retrieving</strong></h2><h3 id="Data-Source-and-version-control"><a href="#Data-Source-and-version-control" class="headerlink" title="Data Source and version control"></a><em>Data Source and version control</em></h3><ul>
+<li><a href="http://www.wanplus.com/lol" title="WAN PLUS" target="_blank" rel="noopener">Data Source</a></li>
+<li><a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" title="BeautifulSoup4" target="_blank" rel="noopener">BeautifulSoup4</a></li>
+<li><a href="https://www.python.org/downloads/" title="python 3.5.2" target="_blank" rel="noopener">Python35</a></li>
+<li><a href="http://www.seleniumhq.org/" title="selenium 3.0.1" target="_blank" rel="noopener">selenium</a></li>
+<li><a href="https://github.com/mozilla/geckodriver/releases/" title="geckodriver-v0.11.1-arm7hf" target="_blank" rel="noopener">geckodriver</a></li>
+<li><a href="http://sqlitebrowser.org/" title="DB browser" target="_blank" rel="noopener">DB browser</a></li>
+</ul>
+<hr>
+<h4 id="crawler-with-PyQt-and-BS4"><a href="#crawler-with-PyQt-and-BS4" class="headerlink" title="crawler with PyQt and BS4"></a>crawler with PyQt and BS4</h4><ul>
+<li><p>BeautifulSoup is just a Web page parser,cannot use for ajax or other dynamic pages,or it is very difficult to achieve it.There is a <a href="https://www.youtube.com/results?search_query=dynamic+webpage+beautifulsoup" title="PyQt BS4" target="_blank" rel="noopener">video</a> on youtube offers an solution. It simulates an browser client to get the dynamic pages,so you can just use BS4 to parse the ajax pages,just as follows:</p>
+</li>
+<li><p>Code:</p>
+</li>
+</ul>
+<a id="more"></a>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> PyQt4.QtGui <span class="keyword">import</span> QApplication</span><br><span class="line"><span class="keyword">from</span> PyQt4.QtCore <span class="keyword">import</span> QUrl</span><br><span class="line"><span class="keyword">from</span> PyQt4.QtWebKit <span class="keyword">import</span> QWebPage</span><br><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="keyword">import</span> bs4 <span class="keyword">as</span> bs</span><br><span class="line"><span class="comment"># from BeautifulSoup import *</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span><span class="params">(QWebPage)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, url)</span>:</span></span><br><span class="line">        self.app = QApplication(sys.argv)</span><br><span class="line">        QWebPage.__init__(self)</span><br><span class="line">        self.loadFinished.connect(self.on_page_load)</span><br><span class="line">        self.mainFrame().load(QUrl(url))</span><br><span class="line">        self.app.exec_()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_page_load</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.app.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">url = <span class="string">'http://www.wanplus.com/lol/playerstats'</span></span><br><span class="line">clien_response = Client(url)</span><br><span class="line">source = clien_response.mainFrame().toHtml()</span><br><span class="line"></span><br><span class="line">soup = bs.BeautifulSoup(source, <span class="string">'html.parser'</span>)</span><br><span class="line">table = soup.find(<span class="string">'table'</span>)</span><br><span class="line"></span><br><span class="line">table_rows = table.find_all(<span class="string">'tr'</span>)</span><br><span class="line"><span class="keyword">for</span> tr <span class="keyword">in</span> table_rows:</span><br><span class="line">    td = tr.find_all(<span class="string">'td'</span>)</span><br><span class="line">    row = [i.text <span class="keyword">for</span> i <span class="keyword">in</span> td]</span><br><span class="line">    <span class="keyword">print</span> (row)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>However this way cannot turn the page down to another page,so we can just get the first page of 144 pages.So,in this system,we will not use this way to get the players and teams data,selenium will be the best way to get it,as for bs4,in the games data retrieving, we will see it again</li>
+<li><p>There are some attentions:</p>
+<ul>
+<li>You’d best to choose PyQt4,this release is the most mature version</li>
+<li>No matter PyQt4 or PyQt5,it is just compatible to the Python 3.4.2 or less. (<del>a very big hole</del>)</li>
+<li>Once you have changed your python release,you’d better change your system environment variables to fit it</li>
+<li>Everything with BeautifulSoup is the same as before or follow</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="crawler-with-selenium"><a href="#crawler-with-selenium" class="headerlink" title="crawler with selenium"></a>crawler with selenium</h4><ul>
+<li>Selenium it a library that can help you to simulate a browser behavior and get the ajax data that you can’t get on the formal situation</li>
+<li>First you need to get a selenium,and geckodriver as before i said</li>
+<li>Then a DB browser is neccessary for you to visuilizate your database</li>
+<li>Code:</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> sqlite3</span><br><span class="line"></span><br><span class="line">driver = webdriver.Firefox()</span><br><span class="line">driver.get(<span class="string">"http://www.wanplus.com/lol/teamstats"</span>)</span><br><span class="line"></span><br><span class="line">conn = sqlite3.connect(<span class="string">'lol.sqlite'</span>)</span><br><span class="line">cur = conn.cursor()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Do some setup</span></span><br><span class="line">cur.executescript(<span class="string">'''</span></span><br><span class="line"><span class="string">DROP TABLE IF EXISTS Team;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">CREATE TABLE Team (</span></span><br><span class="line"><span class="string">    id           INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,</span></span><br><span class="line"><span class="string">    name         TEXT,</span></span><br><span class="line"><span class="string">    kda          REAL,</span></span><br><span class="line"><span class="string">    kill_avg     REAL,</span></span><br><span class="line"><span class="string">    dead_avg     REAL,</span></span><br><span class="line"><span class="string">    dpm          INTEGER,</span></span><br><span class="line"><span class="string">    fb_rate      REAL,</span></span><br><span class="line"><span class="string">    time_avg     TEXT,</span></span><br><span class="line"><span class="string">    gold_avg     INTEGRE,</span></span><br><span class="line"><span class="string">    cs_avg       REAL,</span></span><br><span class="line"><span class="string">    dragon_avg   REAL,</span></span><br><span class="line"><span class="string">    dragon_rate  REAL,</span></span><br><span class="line"><span class="string">    baron_avg    REAL,</span></span><br><span class="line"><span class="string">    baron_rate   REAL,</span></span><br><span class="line"><span class="string">    wpm          REAL,</span></span><br><span class="line"><span class="string">    exepm        REAL,</span></span><br><span class="line"><span class="string">    tower_avg    REAL,</span></span><br><span class="line"><span class="string">    extower_avg   REAL</span></span><br><span class="line"><span class="string">);</span></span><br><span class="line"><span class="string">'''</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">16</span>):</span><br><span class="line">    table = driver.find_element_by_tag_name(<span class="string">'table'</span>)</span><br><span class="line">    table_rows = table.find_elements_by_tag_name(<span class="string">'tr'</span>)</span><br><span class="line">    <span class="keyword">for</span> tr <span class="keyword">in</span> table_rows:</span><br><span class="line">        td = tr.find_elements_by_tag_name(<span class="string">'td'</span>)</span><br><span class="line">        row = [i.text <span class="keyword">for</span> i <span class="keyword">in</span> td]</span><br><span class="line">        <span class="keyword">if</span> len(row) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        cur.execute(<span class="string">'''INSERT OR IGNORE INTO Team (name, kda, kill_avg, dead_avg, dpm, fb_rate,</span></span><br><span class="line"><span class="string">                    time_avg, gold_avg, cs_avg) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )'''</span>,</span><br><span class="line">                    ( row[<span class="number">1</span>], row[<span class="number">2</span>], row[<span class="number">3</span>], row[<span class="number">4</span>], row[<span class="number">5</span>], row[<span class="number">6</span>], row[<span class="number">7</span>], row[<span class="number">8</span>], row[<span class="number">9</span>] ) )</span><br><span class="line">        print(row)</span><br><span class="line"></span><br><span class="line">    page_button = driver.find_element_by_xpath(<span class="string">'html/body/div[2]/div[2]/div[1]/div[2]'</span>)</span><br><span class="line">    page_button.click()</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    table = driver.find_element_by_tag_name(<span class="string">'table'</span>)</span><br><span class="line">    table_rows = table.find_elements_by_tag_name(<span class="string">'tr'</span>)</span><br><span class="line">    <span class="keyword">for</span> tr <span class="keyword">in</span> table_rows:</span><br><span class="line">        td = tr.find_elements_by_tag_name(<span class="string">'td'</span>)</span><br><span class="line">        row = [i.text <span class="keyword">for</span> i <span class="keyword">in</span> td]</span><br><span class="line">        <span class="keyword">if</span> len(row) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        cur.execute(<span class="string">'''UPDATE Team SET dragon_avg = ?, dragon_rate = ?, baron_avg = ?, baron_rate = ?, wpm = ?, exepm = ?,</span></span><br><span class="line"><span class="string">                    tower_avg = ?, extower_avg = ? WHERE id = ?'''</span>,( row[<span class="number">2</span>], row[<span class="number">3</span>], row[<span class="number">4</span>], row[<span class="number">5</span>], row[<span class="number">6</span>], row[<span class="number">7</span>],</span><br><span class="line">                                                                      row[<span class="number">8</span>], row[<span class="number">9</span>], row[<span class="number">0</span>] ))</span><br><span class="line">        print(row)</span><br><span class="line"></span><br><span class="line">    page_button = driver.find_element_by_xpath(<span class="string">".//*[@id='DataTables_Table_0_next']"</span>)</span><br><span class="line">    page_button.click()</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    page_button = driver.find_element_by_xpath(<span class="string">'html/body/div[2]/div[2]/div[1]/div[1]'</span>)</span><br><span class="line">    page_button.click()</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">conn.commit()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The code is very easy to understand,we create a sqlite3 db and put our data into it,that’s it</li>
+<li><p>And also there is some attentions:</p>
+<ul>
+<li>Once you get a geckodriver,if you want to use <code>driver = webdriver.Firefox()</code>,you need to add the geckodriver’s path to the system environment variable <strong>path</strong>,press shift and click right,you can get the whole path.</li>
+<li>The way to get players data is almost the same with teams</li>
+<li>Name cloumn in table should not be unique because one player can be in many teams in different period</li>
+<li>That’s it</li>
+</ul>
+</li>
+<li><p><strong>Today that’s all,in the next part we will try to get games data using bs4 and urllib,that will be much more easier,see you~</strong></p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+          
+            <a href="/tags/databases/" rel="tag"># databases</a>
+          
+            <a href="/tags/beautifulsoup/" rel="tag"># beautifulsoup</a>
+          
+            <a href="/tags/sqlite/" rel="tag"># sqlite</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/03/article11/" rel="next" title="python  SQLite3 插入数据问题">
+                <i class="fa fa-chevron-left"></i> python  SQLite3 插入数据问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/25/article13/" rel="prev" title="Game Prediction System Part 2">
+                Game Prediction System Part 2 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Augustus">
+            
+              <p class="site-author-name" itemprop="name">Augustus</p>
+              <div class="site-description motion-element" itemprop="description">The rest is silence</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Game-Prediction-System-Part-1"><span class="nav-number">1.</span> <span class="nav-text">Game Prediction System Part 1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-Retrieving"><span class="nav-number">1.1.</span> <span class="nav-text">Data Retrieving</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Source-and-version-control"><span class="nav-number">1.1.1.</span> <span class="nav-text">Data Source and version control</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#crawler-with-PyQt-and-BS4"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">crawler with PyQt and BS4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#crawler-with-selenium"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">crawler with selenium</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Augustus</span>
+</div>
+
+<div class="theme-info">
+  <span> 个人博客 </span>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共  字</span>
+  <div class="powered-by"></div>
+</div>
+
+<div class="theme-info">
+  <span> 正在建设 </span>
+</div>
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'NXQ581EXU0',
+      apiKey: '9deb5a16a20b7c66b1ef0c8bd12043c7',
+      indexName: 'shq',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="参考资料：intrusion detection and correlationsecurity information and event management implementationGartner magic quadrant for security information and event management（年报） 由于是上班第一天，大佬们比较忙，所以可能需要自己查阅很多资料，">
+<meta name="keywords" content="Security,SIEM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="security information and event management 学习初探（一）">
+<meta property="og:url" content="https://prohiryu.github.io/2016/11/03/article4/index.html">
+<meta property="og:site_name" content="Sic transit gloria mundi">
+<meta property="og:description" content="参考资料：intrusion detection and correlationsecurity information and event management implementationGartner magic quadrant for security information and event management（年报） 由于是上班第一天，大佬们比较忙，所以可能需要自己查阅很多资料，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716103144352">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716104020198">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716104032729">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716104210357">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716104510487">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716104633673">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716104906799">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716110012475">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716111148930">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716111504481">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716111636622">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716111723560">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716112508089">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716113819240">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716160529773">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716160834559">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716162222380">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716163203749">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716165212800">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716165729381">
+<meta property="og:image" content="http://img.blog.csdn.net/20160716170228556">
+<meta property="og:updated_time" content="2017-05-05T07:17:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="security information and event management 学习初探（一）">
+<meta name="twitter:description" content="参考资料：intrusion detection and correlationsecurity information and event management implementationGartner magic quadrant for security information and event management（年报） 由于是上班第一天，大佬们比较忙，所以可能需要自己查阅很多资料，">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20160716103144352">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://prohiryu.github.io/2016/11/03/article4/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>security information and event management 学习初探（一） | Sic transit gloria mundi</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sic transit gloria mundi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://prohiryu.github.io/2016/11/03/article4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Augustus">
+      <meta itemprop="description" content="The rest is silence">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sic transit gloria mundi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">security information and event management 学习初探（一）
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-03 21:48:49" itemprop="dateCreated datePublished" datetime="2016-11-03T21:48:49+08:00">2016-11-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2017-05-05 15:17:03" itemprop="dateModified" datetime="2017-05-05T15:17:03+08:00">2017-05-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/SIEM/" itemprop="url" rel="index"><span itemprop="name">SIEM</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>参考资料：<br>intrusion detection and correlation<br>security information and event management implementation<br>Gartner magic quadrant for security information and event management（年报）</p>
+<p>由于是上班第一天，大佬们比较忙，所以可能需要自己查阅很多资料，虽然是很粗略的看了上面关于警报关联分析的那一本书，还是在这里稍微总结一下：<br>首先是一个最基本的概念：<br>A successful intrusion into a computer：<br>1.surveillance stage 监控阶段<br>2.exploitation stage<br>3.masquerading stage 伪装阶段</p>
+<a id="more"></a>
+<p>下面用例子分别从这三个方面来介绍alert correlation：<br>首先是alert correlation 的大致流程：<br><img src="http://img.blog.csdn.net/20160716103144352" alt="alert correlation"></p>
+<p>然后是我们的例子，也就是攻击被sensor发现并报警的情况：<br><img src="http://img.blog.csdn.net/20160716104020198" alt="这里写图片描述"></p>
+<p>最后是非常重要的一点，也是在整个alert correlation中必不可少的一个环节或者说工具，那就是Alert Merging：<br><img src="http://img.blog.csdn.net/20160716104032729" alt="这里写图片描述"><br>在后面的步骤介绍中都会看到，这就是alert correlation的核心步骤</p>
+<p>从第三章开始就详细讲述了alert correlation的各个步骤，下面我进行很粗略的总结：</p>
+<p>Chapter 4 ALERT COLLECTION</p>
+<ol>
+<li>Alert Normalization<br>顾名思义，就是将所有的数据格式规范化，而书中也提到了各种规范与标准，对应到我们的例子中，就是攻击名字出现了不规范的情况，将其更改如下：<br><img src="http://img.blog.csdn.net/20160716104210357" alt="这里写图片描述"></li>
+<li><p>Alert Preprocessing<br>数据预处理是每个数据挖掘过程中必须完成的一个重要步骤，这里的预处理主要包含以下部分：<br> 2.1 Determining the Alert Time<br>关于时间，The IDMEF standard defines the following three different classes to represent time.<br>①CreateTime: This is the time when the alert is created by the analyzer.This is the only timestamp         considered mandatory by the IDMEF standard.<br>②DetectTime: This is the time when the event(s) producing an alert are detected by the analyzer. In the case of more than one event, the time the first event was<br>detected.<br>③AnalyzerTime: This is the time at the analyzer when the alert is sent to a correlation system (which is called manager in the IDMEF terminology).<br>至于以上三个标准时间采用哪一个，书中推荐一般为第二个，但是根据不同要求和情况也会选择其他的，具体参照书中标准</p>
+<p> 同时对于时间来说，也有另外一种解决方案，就是an external source such as NTP or SNTP, GPS/GOES/WWV clocks，属于外部绝对时间，但是也很容易造成一些问题，比如：lost alert messages could present a problem for the correlation process，这个问题的阐述书中有，大致就是由于时间的先后关系会造成一部分信息缺失，所以也要考虑，书上给了解决方案，感兴趣也可以看看</p>
+<p> 2.2 Determining the Alert’s Source and Target<br>2.3 Determining the Attack’s Name<br>这两步结果如下：<br><img src="http://img.blog.csdn.net/20160716104510487" alt="这里写图片描述"></p>
+</li>
+</ol>
+<p>Chapter 5 ALERT AGGREGATION AND VERIFICATION</p>
+<p>这一章主要是讲一些不同alert之间的聚合与验证，这也算是处理当中的核心部分，要仔细理解当中每个公式以及聚合的要求</p>
+<ol>
+<li><p>Alert Fusion<br>The task of the alert fusion phase is to combine alerts that result from the independent detection of the same attack occurrence by different intrusion detection systems.<br>大致目标就是把显而易见的重复的报警给融合掉，其中公式如下：<br><img src="http://img.blog.csdn.net/20160716104633673" alt="这里写图片描述"><br>根据以上公式可以看出首先由于时间非常接近，同时属于不同的sensor观测到的，所以alert2与alert3可以合并，但是alert6与alert7尽管时间非常接近，但是由于是同一个sensor观测到的，所以不能聚合，结果如下：<br><img src="http://img.blog.csdn.net/20160716104906799" alt="5-2"></p>
+</li>
+<li><p>Alert Verification<br>这一小节的主要目的就是要对alert进行验证同时去除掉那些不想关或者说错误的alert，形成“big picture”。<br>When a sensor outputs an alert, there are three possibilities:</p>
+<p>①The sensor has correctly identified a successful attack. This alert  is most likely relevant (i.e., <strong>a true positive</strong>).<br>②The sensor has correctly identified an attack, but the attack <strong>failed to meet its    objectives.</strong> Although some sites might be interested in failed attack attempts, the alert should be differentiated from a successful instance. This kind of alert is called <strong>a irrelevant positive or    nontextual</strong> (reflecting the missing contextual information that the IDS would require to determine a failed attack).<br>③The sensor incorrectly identified an event as an attack. The alert represents   incorrect information (i.e., <strong>a false positive</strong>).<br>所以从上面看得出来，虽然都是正确的攻击报警，但是alert1是攻击Windows的IIS Exploit，但是这里却用在了Linux上，所以是属于第二种alert，lose target（注：Microsoft IIS：互联网服务）所以这一步骤过后的结果如下：<br><img src="http://img.blog.csdn.net/20160716110012475" alt="5-3"><br>那至于其他很多具体的判断方法，要参照书上来得出结果。</p>
+<p>2.1 Passive Approach<br>2.2 Active Approach<br>事实上，这一部分就是根据各种标准定的安全策略，分为积极与消极的策略，具体在书中，自己观看</p>
+</li>
+<li><p>Attack Thread Reconstruction<br>说白了就是攻击的线性重建，这一部分的主要依据是下面的公式：<br><img src="http://img.blog.csdn.net/20160716111148930" alt="5-4"><br>根据攻击的来源与目标可以得出下面的结果：<br><img src="http://img.blog.csdn.net/20160716111504481" alt="5-5"></p>
+</li>
+<li><p>Attack Session Reconstruction<br>这一部分其实就是将相关的逻辑上有连接关系的alert放在一起，公式如下：<br><img src="http://img.blog.csdn.net/20160716111636622" alt="5-6"><br>依据上面的开放的端口关系，可以得出下面这样的结果：alert5是由于上面的监控与scan提供的开放端口80进行攻击的，故而这之间是有关系的，所以也可以进行聚合<br><img src="http://img.blog.csdn.net/20160716111723560" alt="5-7"></p>
+</li>
+<li><p>Attack Focus Recognition<br>The task of the attack focus recognition phase is to identify hosts that are either the source or the target of a substantial amount of attacks.<br>这个就是识别到底是一对多还是多对一的攻击，比如ddos之类的，也算是一个比较重要的环节吧</p>
+</li>
+</ol>
+<p>Chapter 6 HIGH-LEVEL ALERT STRUCTURES</p>
+<ol>
+<li><p>Multistep Correlation<br>Multistep correlation is used to identify high-level attack patterns that are composed of several individual attacks.<br>就是将攻击的各个阶段不再单独孤立地进行分析，将一条攻击链组织起来，形成高层次攻击的识别<br>对于我们的例子，可以看出来由10和11组成的攻击链是能够相连的，所以可以聚合，以下是结果：<br><img src="http://img.blog.csdn.net/20160716112508089" alt="6-1"><br>For our example, we assume that a multistep scenario has been defined that includes a scanning step, a break-in step, and an escalation of privileges step.</p>
+</li>
+<li><p>Impact Analysis<br>In the impact analysis phase, the effects of an attack on the proper operation of the network are determined. The idea of this phase is to analyze alerts (and the corresponding attacks) with regard to the context in which they occur. In all previous steps, alerts are evaluated independently of their environment. Only the internal information that is stored within an alert is used to determine whether it can be aggregated with others into higher-level meta-alerts. A notable exception is the alert verification phase, which includes external information to check whether it is possible for a certain attack to have succeeded or not.</p>
+</li>
+<li><p>Alert Prioritizing<br>顾名思义就是给alert分级，对于我们这个例子来说，只有最终完成了的整个攻击链算是高等级，其他均为低等级<br><img src="http://img.blog.csdn.net/20160716113819240" alt="这里写图片描述"></p>
+</li>
+<li><p>Alert Sanitization<br>sanitzation：环境卫生- -<br>The process of removing or disguising sensitive information from data is called sanitization. There are two forms of sanitization, anonymizing and pseudonymizing sanitization：The sanitization process should, besides preserving the properties required for analysis, also satisfy the following requirements</p>
+<p> （1）Understand structure of data.只提取出有用的属性<br> （2）Preserve data integrity.保持数据完整性<br> （3）Operate fail-safe.对敏感数据要谨慎处理</p>
+<p> 以上就是alert sanitation的要求，至于如何进行sanitation，书上有相关介绍，同时还有各种自动化的介绍，可以深入探究，但是要注意自动也有一定利弊</p>
+</li>
+</ol>
+<p>Chapter 7 LARGE-SCALE CORRELATION</p>
+<p>首先来看一下大规模关联分析的模型：<br><img src="http://img.blog.csdn.net/20160716160529773" alt="6-1"></p>
+<p>下面是分层关联模式：Hierarchical Correlation Schema<br><img src="http://img.blog.csdn.net/20160716160834559" alt="6-2"></p>
+<p>这一章主要就是讲在当前大规模分布式系统当中的关联分析，也是非常粗略的总结一下</p>
+<ol>
+<li><p>Pattern Specification<br> 这一节主要是模式与图样的规范化</p>
+<p> 1.1 Definitions 将不同机器，不同子系统之间的定义统一<br> 当以下条件满足时，称之为形成了一个pattern：</p>
+<p> <strong>Pattern P is valid, if the following properties hold：</strong><br> 1 Each set of alerts is at least linked to one other set.<br> 2 Every set except one (called the root set) contains exactly one send event as the last event of the host sequence. The root set contains no send event.<br> 3 The connection graph contains no cycles. The connection graph is built by considering each alert set as a vertex and each link between two sets as an edge between the corresponding vertices.</p>
+</li>
+</ol>
+<pre><code>1.2 Attack Specification Language (ASL). 规范化描述语言，比如
+![ASL](http://img.blog.csdn.net/20160716161703695) 等等等等
+1.3 Language Grammar 通俗点就是连词成句的语法
+![这里写图片描述](http://img.blog.csdn.net/20160716161942129)
+</code></pre><ol start="2">
+<li><p>Pattern Detection<br> The purpose of the pattern detection process is to identify alert instances that satisfy an attack scenario written in ASL.</p>
+<p> 2.1 Basic Data Structures<br> Pattern Graph：<br> <img src="http://img.blog.csdn.net/20160716162222380" alt="PG"><br> Messages：<strong>（ID, timestamp, list of (attribute, value)）</strong> The ID of the message is set to the identification of the node of the pattern graph. The timestamp denotes the time of occurrence of the original event and the attribute/value list holds the values of the relevant event attributes that have been taken from the original event attributes. The ID of a message defines its type. Different actual message instances with an identical ID are considered to be of the same message type</p>
+<p> 2.2 Constraints 约束分为动态的静态的以及约定好的<br> 2.3 Detection Process<br> node constraints：<br> <img src="http://img.blog.csdn.net/20160716163203749" alt="这里写图片描述"><br> &lt;0, t1, (a1,0)&gt;, &lt;0, t2, (a1,1)&gt;, &lt;1, t3, (a2,0)&gt;, &lt;1, t4, (a2,1)&gt;, and &lt;3, t5, (a3,0)&gt;：<br> <img src="http://img.blog.csdn.net/20160716165212800" alt="这里写图片描述"><br> 关于这个pattern graph里面的东西还挺复杂的，有空可以好好钻研下<br> 另外还有一个很重要的东西就是Detection Algorithm，例子如下：<br> <img src="http://img.blog.csdn.net/20160716165729381" alt="detection algorithm"></p>
+<p> 2.4 Implementation Issues<br> 自己体会吧。。感觉稍微有点绕<br> <img src="http://img.blog.csdn.net/20160716170228556" alt="这里写图片描述"></p>
+</li>
+</ol>
+<p>总结：</p>
+<pre><code>没有什么比接受新的知识更让人兴奋的了，可惜其中还是有很多我没有看懂的东西，时间还有，同时工作中需要专注于哪个部分，都是以后要注意的地方，继续加油吧~
+</code></pre>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Security/" rel="tag"># Security</a>
+          
+            <a href="/tags/SIEM/" rel="tag"># SIEM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/03/article3/" rel="next" title="MySQL 服务无法启动">
+                <i class="fa fa-chevron-left"></i> MySQL 服务无法启动
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/03/article5/" rel="prev" title="security information and event management 学习初探（二）">
+                security information and event management 学习初探（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Augustus">
+            
+              <p class="site-author-name" itemprop="name">Augustus</p>
+              <div class="site-description motion-element" itemprop="description">The rest is silence</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Augustus</span>
+</div>
+
+<div class="theme-info">
+  <span> 个人博客 </span>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共  字</span>
+  <div class="powered-by"></div>
+</div>
+
+<div class="theme-info">
+  <span> 正在建设 </span>
+</div>
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

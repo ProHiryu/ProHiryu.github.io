@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'NXQ581EXU0',
+      apiKey: '9deb5a16a20b7c66b1ef0c8bd12043c7',
+      indexName: 'shq',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Notes in ML is over, welcome to the github get what you want   thanks for the sentdex again  Recurrent Neural NetworkBasics the traditional nn is [X -&amp;gt; Layer -&amp;gt; Output]  This is the RNN  the Hi">
+<meta name="keywords" content="python,machine learning,clustering,deep learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Notes-in-Machine-Learning-with-Python-7">
+<meta property="og:url" content="https://prohiryu.github.io/2017/04/10/Notes-in-Machine-Learning-with-Python-7/index.html">
+<meta property="og:site_name" content="Sic transit gloria mundi">
+<meta property="og:description" content="Notes in ML is over, welcome to the github get what you want   thanks for the sentdex again  Recurrent Neural NetworkBasics the traditional nn is [X -&amp;gt; Layer -&amp;gt; Output]  This is the RNN  the Hi">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://kvitajakub.github.io/img/rnn-unrolled.svg">
+<meta property="og:image" content="http://cs231n.github.io/assets/nn1/neural_net2.jpeg">
+<meta property="og:image" content="http://cs231n.github.io/assets/cnn/cnn.jpeg">
+<meta property="og:updated_time" content="2017-05-05T07:25:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Notes-in-Machine-Learning-with-Python-7">
+<meta name="twitter:description" content="Notes in ML is over, welcome to the github get what you want   thanks for the sentdex again  Recurrent Neural NetworkBasics the traditional nn is [X -&amp;gt; Layer -&amp;gt; Output]  This is the RNN  the Hi">
+<meta name="twitter:image" content="http://kvitajakub.github.io/img/rnn-unrolled.svg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://prohiryu.github.io/2017/04/10/Notes-in-Machine-Learning-with-Python-7/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Notes-in-Machine-Learning-with-Python-7 | Sic transit gloria mundi</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sic transit gloria mundi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://prohiryu.github.io/2017/04/10/Notes-in-Machine-Learning-with-Python-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Augustus">
+      <meta itemprop="description" content="The rest is silence">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sic transit gloria mundi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Notes-in-Machine-Learning-with-Python-7
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-04-10 11:19:06" itemprop="dateCreated datePublished" datetime="2017-04-10T11:19:06+08:00">2017-04-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2017-05-05 15:25:40" itemprop="dateModified" datetime="2017-05-05T15:25:40+08:00">2017-05-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Notes in ML is over, welcome to the <a href="https://github.com/ProHiryu/Machine-Learning-with-Python" target="_blank" rel="noopener">github</a> get what you want</p>
+</blockquote>
+<blockquote>
+<p>thanks for the <a href="https://www.youtube.com/channel/UCfzlCWGWYyIQ0aLC5w48gBQ" target="_blank" rel="noopener">sentdex</a> again</p>
+</blockquote>
+<h1 id="Recurrent-Neural-Network"><a href="#Recurrent-Neural-Network" class="headerlink" title="Recurrent Neural Network"></a>Recurrent Neural Network</h1><h2 id="Basics"><a href="#Basics" class="headerlink" title="Basics"></a>Basics</h2><ul>
+<li><p>the traditional nn is [X -&gt; Layer -&gt; Output]</p>
+</li>
+<li><p>This is the <a href="http://blog.csdn.net/heyongluoyao8/article/details/48636251" target="_blank" rel="noopener">RNN</a><img src="http://kvitajakub.github.io/img/rnn-unrolled.svg" alt="the RNN"></p>
+</li>
+<li><p>the Hidden Layer is connected</p>
+</li>
+<li><p>Most used in <a href="https://en.wikipedia.org/wiki/Natural_language_processing" target="_blank" rel="noopener">NLP(Natural language processing)</a></p>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="RNN-examples"><a href="#RNN-examples" class="headerlink" title="RNN examples"></a>RNN examples</h2><ul>
+<li><p><code>tf.transpose(x, [1, 0, 2])</code> : just matrix transpose</p>
+</li>
+<li><p>transpose in numpy</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">x = np.ones((<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">print(x)</span><br><span class="line">print(np.transpose(x,(<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># [[</span></span><br><span class="line"><span class="comment">#   [ 1\.  1\.  1.],</span></span><br><span class="line"><span class="comment">#   [ 1\.  1\.  1.]</span></span><br><span class="line"><span class="comment"># ]]</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># [</span></span><br><span class="line"><span class="comment">#  [[ 1\.  1\.  1.]],</span></span><br><span class="line"><span class="comment">#  [[ 1\.  1\.  1.]]</span></span><br><span class="line"><span class="comment"># ]</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>tensorflow needs to transpose into (1,0,2) means 3-d -&gt; 3-d ; 1-d -&gt; 2-d ; 2-d -&gt; 1-d</p>
+</li>
+</ul>
+<h1 id="Convolutional-Neural-Network"><a href="#Convolutional-Neural-Network" class="headerlink" title="Convolutional Neural Network"></a>Convolutional Neural Network</h1><h2 id="Basics-1"><a href="#Basics-1" class="headerlink" title="Basics"></a>Basics</h2><ul>
+<li><p>Convolution + Pool = Hidden Layer</p>
+</li>
+<li><p>Fully Connected : just the same as the ordinary nn</p>
+</li>
+<li><p>the whole structure: <img src="http://cs231n.github.io/assets/nn1/neural_net2.jpeg" alt></p>
+</li>
+<li><p>the hidden layer: <img src="http://cs231n.github.io/assets/cnn/cnn.jpeg" alt></p>
+</li>
+<li><p><a href="http://cs231n.github.io/convolutional-networks/#overview" target="_blank" rel="noopener">convolutional-networks</a></p>
+</li>
+</ul>
+<h2 id="CNN-examples"><a href="#CNN-examples" class="headerlink" title="CNN examples"></a>CNN examples</h2><ul>
+<li><code>weights : tf.Variable(tf.random_normal([5,5,1,32])</code> : 5 * 5 convolution ,1 input ,32 outputs</li>
+<li><code>weights : W_fc&#39;:tf.Variable(tf.random_normal([7*7*64,1024]))</code> : fully connected 7*7 means we just need the part of the images</li>
+<li><p><code>tf.nn.conv2d(x, W, strides=[1,1,1,1], padding=&#39;SAME&#39;)</code></p>
+<ul>
+<li>A list of ints. The stride of the sliding window for each dimension of input. Must be in the same order as the dimension specified with format</li>
+<li>padding: A string from: “SAME”, “VALID”. The type of padding algorithm to use</li>
+</ul>
+</li>
+<li><p><code>tf.nn.max_pool(x, ksize=[1,2,2,1], strides=[1,2,2,1], padding=&#39;SAME&#39;)</code></p>
+<ul>
+<li>ksize: The size of the window for each dimension of the input tensor.</li>
+<li>strides: The stride of the sliding window for each dimension of the input tensor</li>
+</ul>
+</li>
+<li><p><code>fc = tf.nn.dropout(fc, keep_rate)</code> : <strong>_<a href="https://en.wikipedia.org/wiki/Convolutional_neural_network#Dropout" target="_blank" rel="noopener">Dropout</a>_</strong></p>
+<ul>
+<li>x: A tensor</li>
+<li>keep_prob: A scalar Tensor with the same type as x. The probability that each element is kept</li>
+</ul>
+</li>
+</ul>
+<h1 id="TFLearn"><a href="#TFLearn" class="headerlink" title="TFLearn"></a>TFLearn</h1><blockquote>
+<p><a href="https://tflearn.org" target="_blank" rel="noopener">tflearn.org</a></p>
+</blockquote>
+<p>TFlearn is a modular and transparent deep learning library built on top of Tensorflow. It was designed to provide a higher-level API to TensorFlow in order to facilitate and speed-up experimentations, while remaining fully transparent and compatible with it.</p>
+<h2 id="TFLearn-for-CNN"><a href="#TFLearn-for-CNN" class="headerlink" title="TFLearn for CNN"></a>TFLearn for CNN</h2><ul>
+<li><p>the example:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">X, Y, test_x, test_y = mnist.load_data(one_hot=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">X = X.reshape([<span class="number">-1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>])</span><br><span class="line">test_x = test_x.reshape([<span class="number">-1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">convnet = input_data(shape=[<span class="literal">None</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>], name=<span class="string">'input'</span>)</span><br><span class="line"></span><br><span class="line">convnet = conv_2d(convnet, <span class="number">32</span>, <span class="number">2</span>, activation=<span class="string">'relu'</span>)</span><br><span class="line">convnet = max_pool_2d(convnet, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">convnet = conv_2d(convnet, <span class="number">64</span>, <span class="number">2</span>, activation=<span class="string">'relu'</span>)</span><br><span class="line">convnet = max_pool_2d(convnet, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">convnet = fully_connected(convnet, <span class="number">1024</span>, activation=<span class="string">'relu'</span>)</span><br><span class="line">convnet = dropout(convnet, <span class="number">0.8</span>)</span><br><span class="line"></span><br><span class="line">convnet = fully_connected(convnet, <span class="number">10</span>, activation=<span class="string">'softmax'</span>)</span><br><span class="line">convnet = regression(convnet, optimizer=<span class="string">'adam'</span>, learning_rate=<span class="number">0.01</span>,</span><br><span class="line">                     loss=<span class="string">'categorical_crossentropy'</span>, name=<span class="string">'targets'</span>)</span><br><span class="line"></span><br><span class="line">model = tflearn.DNN(convnet)</span><br><span class="line">model.fit(&#123;<span class="string">'input'</span>: X&#125;, &#123;<span class="string">'targets'</span>: Y&#125;, n_epoch=<span class="number">10</span>, validation_set=(&#123;<span class="string">'input'</span>: test_x&#125;, &#123;<span class="string">'targets'</span>: test_y&#125;),</span><br><span class="line">          snapshot_step=<span class="number">500</span>, show_metric=<span class="literal">True</span>, run_id=<span class="string">'mnist'</span>)</span><br><span class="line"></span><br><span class="line">model.save(<span class="string">'tflearncnn.model'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>model.save(&#39;tflearncnn.model&#39;)</code> : only save the frame but not the values</p>
+</li>
+<li><p><code>model.predict([test_x[1]])</code> : the parameters must be list</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+          
+            <a href="/tags/clustering/" rel="tag"># clustering</a>
+          
+            <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/06/Notes-in-Machine-Learning-with-Python-6/" rel="next" title="Notes-in-Machine-Learning-with-Python (6)">
+                <i class="fa fa-chevron-left"></i> Notes-in-Machine-Learning-with-Python (6)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/18/Dataframe-in-pandas/" rel="prev" title="Dataframe in pandas">
+                Dataframe in pandas <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Augustus">
+            
+              <p class="site-author-name" itemprop="name">Augustus</p>
+              <div class="site-description motion-element" itemprop="description">The rest is silence</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Recurrent-Neural-Network"><span class="nav-number">1.</span> <span class="nav-text">Recurrent Neural Network</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basics"><span class="nav-number">1.1.</span> <span class="nav-text">Basics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RNN-examples"><span class="nav-number">1.2.</span> <span class="nav-text">RNN examples</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Convolutional-Neural-Network"><span class="nav-number">2.</span> <span class="nav-text">Convolutional Neural Network</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basics-1"><span class="nav-number">2.1.</span> <span class="nav-text">Basics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CNN-examples"><span class="nav-number">2.2.</span> <span class="nav-text">CNN examples</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TFLearn"><span class="nav-number">3.</span> <span class="nav-text">TFLearn</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TFLearn-for-CNN"><span class="nav-number">3.1.</span> <span class="nav-text">TFLearn for CNN</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Augustus</span>
+</div>
+
+<div class="theme-info">
+  <span> 个人博客 </span>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共  字</span>
+  <div class="powered-by"></div>
+</div>
+
+<div class="theme-info">
+  <span> 正在建设 </span>
+</div>
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

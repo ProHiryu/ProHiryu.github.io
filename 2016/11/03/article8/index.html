@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'NXQ581EXU0',
+      apiKey: '9deb5a16a20b7c66b1ef0c8bd12043c7',
+      indexName: 'shq',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本文针对 ROC 曲线相关的各种概念进行基本阐述，以供日后查阅  基本概念二元分类模型的个案预测有四种结局：  真阳性（TP）：诊断为有，实际上也有高血压。 伪阳性（FP）：诊断为有，实际却没有高血压。 真阴性（TN）：诊断为没有，实际上也没有高血压。 伪阴性（FN）：诊断为没有，实际却有高血压。     Confusion matrix 实际为 True 实际为 False         检">
+<meta name="keywords" content="machine learning,SIEM,classifier">
+<meta property="og:type" content="article">
+<meta property="og:title" content="false positive 与 false negative">
+<meta property="og:url" content="https://prohiryu.github.io/2016/11/03/article8/index.html">
+<meta property="og:site_name" content="Sic transit gloria mundi">
+<meta property="og:description" content="本文针对 ROC 曲线相关的各种概念进行基本阐述，以供日后查阅  基本概念二元分类模型的个案预测有四种结局：  真阳性（TP）：诊断为有，实际上也有高血压。 伪阳性（FP）：诊断为有，实际却没有高血压。 真阴性（TN）：诊断为没有，实际上也没有高血压。 伪阴性（FN）：诊断为没有，实际却有高血压。     Confusion matrix 实际为 True 实际为 False         检">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5ly1fg4necf724j20ud0ueglr.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5ly1fg4nnrs5vxj20a10gbq2w.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5ly1fg4pf4yftcj20fs07tgm7.jpg">
+<meta property="og:updated_time" content="2017-05-31T10:13:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="false positive 与 false negative">
+<meta name="twitter:description" content="本文针对 ROC 曲线相关的各种概念进行基本阐述，以供日后查阅  基本概念二元分类模型的个案预测有四种结局：  真阳性（TP）：诊断为有，实际上也有高血压。 伪阳性（FP）：诊断为有，实际却没有高血压。 真阴性（TN）：诊断为没有，实际上也没有高血压。 伪阴性（FN）：诊断为没有，实际却有高血压。     Confusion matrix 实际为 True 实际为 False         检">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5ly1fg4necf724j20ud0ueglr.jpg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://prohiryu.github.io/2016/11/03/article8/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>false positive 与 false negative | Sic transit gloria mundi</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sic transit gloria mundi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://prohiryu.github.io/2016/11/03/article8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Augustus">
+      <meta itemprop="description" content="The rest is silence">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sic transit gloria mundi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">false positive 与 false negative
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-03 21:49:05" itemprop="dateCreated datePublished" datetime="2016-11-03T21:49:05+08:00">2016-11-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2017-05-31 18:13:34" itemprop="dateModified" datetime="2017-05-31T18:13:34+08:00">2017-05-31</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/SIEM/" itemprop="url" rel="index"><span itemprop="name">SIEM</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文针对 ROC 曲线相关的各种概念进行基本阐述，以供日后查阅</p>
+</blockquote>
+<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p>二元分类模型的个案预测有四种结局：</p>
+<ul>
+<li>真阳性（TP）：诊断为有，实际上也有高血压。</li>
+<li>伪阳性（FP）：诊断为有，实际却没有高血压。</li>
+<li>真阴性（TN）：诊断为没有，实际上也没有高血压。</li>
+<li>伪阴性（FN）：诊断为没有，实际却有高血压。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Confusion matrix</th>
+<th style="text-align:center">实际为 True</th>
+<th style="text-align:center">实际为 False</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">    检测为 True</td>
+<td style="text-align:center">TP</td>
+<td style="text-align:center">FP</td>
+</tr>
+<tr>
+<td style="text-align:center">   检测为 False</td>
+<td style="text-align:center">FN</td>
+<td style="text-align:center">TN</td>
+</tr>
+</tbody>
+</table>
+<p>以上定义来自 wiki，从表中可以很清晰地看出对应的关系，注意 TP 等概念指的是对应的项目个数，同样的，这里并不涉及到各种检测率的概念，只是单纯的程序是否判断正确的个数统计。注意，涉及到多类问题的时候，应该将每一类分开计算，其余类别均属于错误范围内。</p>
+<a id="more"></a>
+<h1 id="ROC-区间"><a href="#ROC-区间" class="headerlink" title="ROC 区间"></a>ROC 区间</h1><p>如图： <img src="http://ww1.sinaimg.cn/large/e1ac6bd5ly1fg4necf724j20ud0ueglr.jpg" alt></p>
+<p>图中所示：</p>
+<ul>
+<li>TPR：TP／（TP+FN）</li>
+<li>FPR：FP／（FP+TN）</li>
+</ul>
+<p>从 (0, 0) 到 (1,1) 的对角线将 ROC 空间划分为左上／右下两个区域，在这条线的以上的点代表了一个好的分类结果（胜过随机分类），而在这条线以下的点代表了差的分类结果（劣于随机分类）。图中的 A 是三个分类器中性能最好的一个，而 C 的反向分类确是最完美的一个，意思就是无论 C 分类器给出的判断是什么，均取反即可</p>
+<h1 id="ROC-曲线"><a href="#ROC-曲线" class="headerlink" title="ROC 曲线"></a>ROC 曲线</h1><p>对于每个不同的分类器来说，分为 1 与 0 总是需要取一个阈值的，也就是可以理解为在神经网络中最后一层，选择怎样的阈值对网络得出的结果进行判断，如下图所示，当设定的阈值进行变化时，整个 ROC 空间会得到一连串的不同坐标，而这些坐标放在一起连成曲线，就能得到所谓的 ROC 曲线，其中最接近左上角的点，就是最佳阈值的取值点</p>
+<p><img src="http://ww1.sinaimg.cn/large/e1ac6bd5ly1fg4nnrs5vxj20a10gbq2w.jpg" alt></p>
+<p>应当注意的是：</p>
+<ul>
+<li>当阈值设定为最高时，必得出 ROC 座标系左下角的点 (0, 0)</li>
+<li>当阈值设定为最低时，必得出 ROC 座标系右上角的点 (1, 1)</li>
+<li>随着阈值调低，ROC 点 往右上（或右／或上）移动，或不动；但绝不会往左下 (或左／或下) 移动。</li>
+</ul>
+<h1 id="曲线下面积（AUC）"><a href="#曲线下面积（AUC）" class="headerlink" title="曲线下面积（AUC）"></a>曲线下面积（AUC）</h1><p>AUC 从下图中就可以看出代表的含义，就是曲线下的面积占总面积比，不难得到，AUC 的值越大，则分类器的正确率越高，在比较不同的分类模型时，可以将每个模型的 ROC 曲线都画出来，比较曲线下面积做为模型优劣的指标。</p>
+<p><img src="http://ww1.sinaimg.cn/large/e1ac6bd5ly1fg4pf4yftcj20fs07tgm7.jpg" alt></p>
+<h1 id="其他概念"><a href="#其他概念" class="headerlink" title="其他概念"></a>其他概念</h1><ul>
+<li>准确率（precision rate）：TP／（TP+FP）</li>
+<li>召回率（recall rate）：TP／（TP+FN）</li>
+</ul>
+<p>准确率代表的是，检测出来的所有的值为1的项当中有多少是检测正确的项，但事实上不一定准确率越高的分类器性能越好，因为还存在召回率的问题，实际操作中，一般要求召回率在85%-100%之间为宜。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+          
+            <a href="/tags/SIEM/" rel="tag"># SIEM</a>
+          
+            <a href="/tags/classifier/" rel="tag"># classifier</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/03/article7/" rel="next" title="security information and event management 学习初探（四）">
+                <i class="fa fa-chevron-left"></i> security information and event management 学习初探（四）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/03/article9/" rel="prev" title="eclipse 安装 aptana 插件 很愚蠢的问题">
+                eclipse 安装 aptana 插件 很愚蠢的问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Augustus">
+            
+              <p class="site-author-name" itemprop="name">Augustus</p>
+              <div class="site-description motion-element" itemprop="description">The rest is silence</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ROC-区间"><span class="nav-number">2.</span> <span class="nav-text">ROC 区间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ROC-曲线"><span class="nav-number">3.</span> <span class="nav-text">ROC 曲线</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#曲线下面积（AUC）"><span class="nav-number">4.</span> <span class="nav-text">曲线下面积（AUC）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他概念"><span class="nav-number">5.</span> <span class="nav-text">其他概念</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Augustus</span>
+</div>
+
+<div class="theme-info">
+  <span> 个人博客 </span>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共  字</span>
+  <div class="powered-by"></div>
+</div>
+
+<div class="theme-info">
+  <span> 正在建设 </span>
+</div>
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

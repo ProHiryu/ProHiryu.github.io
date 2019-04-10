@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'NXQ581EXU0',
+      apiKey: '9deb5a16a20b7c66b1ef0c8bd12043c7',
+      indexName: 'shq',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="opencv + python + keras   绪论Github 项目地址 很久很久以前，就想着有没有机会能够写一个能识别女优人脸的程序，因为这个东西似乎市场需求很大但是却没什么人去做，那么今天就让我来简单写一下吧，计算机视觉与深度学习发展到今天，也不用争论这个东西的泡沫到底破灭不破灭了，抓紧时间做出点真正有用的应用比争来争去靠谱多了，不是吗？">
+<meta name="keywords" content="python,deep learning,opencv,computer vision">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单 VGG 的女优人脸识别实现">
+<meta property="og:url" content="https://prohiryu.github.io/2017/08/06/face-recognition/index.html">
+<meta property="og:site_name" content="Sic transit gloria mundi">
+<meta property="og:description" content="opencv + python + keras   绪论Github 项目地址 很久很久以前，就想着有没有机会能够写一个能识别女优人脸的程序，因为这个东西似乎市场需求很大但是却没什么人去做，那么今天就让我来简单写一下吧，计算机视觉与深度学习发展到今天，也不用争论这个东西的泡沫到底破灭不破灭了，抓紧时间做出点真正有用的应用比争来争去靠谱多了，不是吗？">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5gy1fia5l3tvefj20qo0cstcl.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5gy1fjef22u475j20q809t770.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5gy1fjeezd9jv2j20py0rk1kx.jpg">
+<meta property="og:updated_time" content="2017-09-10T06:55:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简单 VGG 的女优人脸识别实现">
+<meta name="twitter:description" content="opencv + python + keras   绪论Github 项目地址 很久很久以前，就想着有没有机会能够写一个能识别女优人脸的程序，因为这个东西似乎市场需求很大但是却没什么人去做，那么今天就让我来简单写一下吧，计算机视觉与深度学习发展到今天，也不用争论这个东西的泡沫到底破灭不破灭了，抓紧时间做出点真正有用的应用比争来争去靠谱多了，不是吗？">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5gy1fia5l3tvefj20qo0cstcl.jpg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://prohiryu.github.io/2017/08/06/face-recognition/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>简单 VGG 的女优人脸识别实现 | Sic transit gloria mundi</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sic transit gloria mundi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://prohiryu.github.io/2017/08/06/face-recognition/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Augustus">
+      <meta itemprop="description" content="The rest is silence">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sic transit gloria mundi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">简单 VGG 的女优人脸识别实现
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-08-06 17:46:43" itemprop="dateCreated datePublished" datetime="2017-08-06T17:46:43+08:00">2017-08-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2017-09-10 14:55:47" itemprop="dateModified" datetime="2017-09-10T14:55:47+08:00">2017-09-10</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Computer-Vision/" itemprop="url" rel="index"><span itemprop="name">Computer Vision</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>opencv + python + keras</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/e1ac6bd5gy1fia5l3tvefj20qo0cstcl.jpg" alt></p>
+<h1 id="绪论"><a href="#绪论" class="headerlink" title="绪论"></a>绪论</h1><p><a href="https://github.com/ProHiryu/FaceRecoginition" target="_blank" rel="noopener">Github 项目地址</a></p>
+<p>很久很久以前，就想着有没有机会能够写一个能识别女优人脸的程序，因为这个东西似乎市场需求很大但是却没什么人去做，那么今天就让我来简单写一下吧，计算机视觉与深度学习发展到今天，也不用争论这个东西的泡沫到底破灭不破灭了，抓紧时间做出点真正有用的应用比争来争去靠谱多了，不是吗？</p>
+<a id="more"></a>
+<h1 id="opencv-安装"><a href="#opencv-安装" class="headerlink" title="opencv 安装"></a>opencv 安装</h1><p>首先安装 opencv</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ brew tap homebrew/science</span><br><span class="line">$ brew install opencv3 --with-python3 --without-python</span><br></pre></td></tr></table></figure>
+<p>指定 python 需要调用包的位置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ln -s /usr/<span class="built_in">local</span>/Cellar/opencv3/3.2.0/lib/python3.6/site-packages/cv2.cpython-36m-darwin.so /Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages/cv2.so</span><br></pre></td></tr></table></figure>
+<p><strong>pip 换国内源加速</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade h5py numpy</span><br></pre></td></tr></table></figure>
+<h1 id="VGG-网络架构"><a href="#VGG-网络架构" class="headerlink" title="VGG 网络架构"></a>VGG 网络架构</h1><p>首先参考 Keras 官网给出的 VGG 网络实现：<a href="https://keras-cn.readthedocs.io/en/latest/getting_started/sequential_model/#_3" target="_blank" rel="noopener">Keras.VGG</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Dropout, Flatten</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Conv2D, MaxPooling2D</span><br><span class="line"><span class="keyword">from</span> keras.optimizers <span class="keyword">import</span> SGD</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate dummy data</span></span><br><span class="line">x_train = np.random.random((<span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>, <span class="number">3</span>))</span><br><span class="line">y_train = keras.utils.to_categorical(np.random.randint(<span class="number">10</span>, size=(<span class="number">100</span>, <span class="number">1</span>)), num_classes=<span class="number">10</span>)</span><br><span class="line">x_test = np.random.random((<span class="number">20</span>, <span class="number">100</span>, <span class="number">100</span>, <span class="number">3</span>))</span><br><span class="line">y_test = keras.utils.to_categorical(np.random.randint(<span class="number">10</span>, size=(<span class="number">20</span>, <span class="number">1</span>)), num_classes=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">model = Sequential()</span><br><span class="line"><span class="comment"># input: 100x100 images with 3 channels -&gt; (100, 100, 3) tensors.</span></span><br><span class="line"><span class="comment"># this applies 32 convolution filters of size 3x3 each.</span></span><br><span class="line">model.add(Conv2D(<span class="number">32</span>, (<span class="number">3</span>, <span class="number">3</span>), activation=<span class="string">'relu'</span>, input_shape=(<span class="number">100</span>, <span class="number">100</span>, <span class="number">3</span>)))</span><br><span class="line">model.add(Conv2D(<span class="number">32</span>, (<span class="number">3</span>, <span class="number">3</span>), activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line">model.add(Dropout(<span class="number">0.25</span>))</span><br><span class="line"></span><br><span class="line">model.add(Conv2D(<span class="number">64</span>, (<span class="number">3</span>, <span class="number">3</span>), activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(Conv2D(<span class="number">64</span>, (<span class="number">3</span>, <span class="number">3</span>), activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line">model.add(Dropout(<span class="number">0.25</span>))</span><br><span class="line"></span><br><span class="line">model.add(Flatten())</span><br><span class="line">model.add(Dense(<span class="number">256</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.5</span>))</span><br><span class="line">model.add(Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>))</span><br><span class="line"></span><br><span class="line">sgd = SGD(lr=<span class="number">0.01</span>, decay=<span class="number">1e-6</span>, momentum=<span class="number">0.9</span>, nesterov=<span class="literal">True</span>)</span><br><span class="line">model.compile(loss=<span class="string">'categorical_crossentropy'</span>, optimizer=sgd)</span><br><span class="line"></span><br><span class="line">model.fit(x_train, y_train, batch_size=<span class="number">32</span>, epochs=<span class="number">10</span>)</span><br><span class="line">score = model.evaluate(x_test, y_test, batch_size=<span class="number">32</span>)</span><br></pre></td></tr></table></figure>
+<p>上述样例代码实现的应该是从 32 过滤器起步到 256 最后池化为 10 位输出分类器的 VGG 神经网络，下图则是从 64 到 512 的结构示意图，大体上来说可以分为两个大块，一个是卷积层，一个是池化层</p>
+<p>卷积层通过指定大小的 filter（一般为 3x3，最小）来实现对图片的卷积，通过相比 AlexNet 更小的 filter 可以得到更多的 channel，达到更高的精度</p>
+<p>池化层是对卷积过后的结果进行降采样，上述例子中在 100 <em>100 输入进来后，经过 MaxPooling2D 的池化会得到 50</em> 50 的输出，同样还有 MeanPooling 等其他函数</p>
+<p>Dropout 可以提高效率，具体参考网上资料</p>
+<p><img src="http://ww1.sinaimg.cn/large/e1ac6bd5gy1fjef22u475j20q809t770.jpg" alt></p>
+<p>下图是本项目定义的 VGGnet 结构，相对上面的样例代码还是有一点区别，主要表现在图片格式以及网络结构上</p>
+<p><img src="http://ww1.sinaimg.cn/large/e1ac6bd5gy1fjeezd9jv2j20py0rk1kx.jpg" alt></p>
+<blockquote>
+<p><a href="https://arxiv.org/abs/1409.1556" target="_blank" rel="noopener">参考 paper</a></p>
+</blockquote>
+<h1 id="Keras"><a href="#Keras" class="headerlink" title="Keras"></a>Keras</h1><p>Keras 实在是一个非常方便的深度学习库，而且官方文档给的很详细，同时中文文档也写的很好，所有的东西都可以在上面查询，这里就记录一些重点内容</p>
+<h2 id="TF-卷积核与-TH-卷积核"><a href="#TF-卷积核与-TH-卷积核" class="headerlink" title="TF 卷积核与 TH 卷积核"></a>TF 卷积核与 TH 卷积核</h2><p>Keras 提供了两套后端，Theano 和 Tensorflow</p>
+<p>二者在实际应用中最常见的错误大概就是输入样本的结构不对了，其应该为：</p>
+<ul>
+<li>“channels_first” – th – （3,128,128）</li>
+<li>“channels_last” –tf – （128,128,3）</li>
+</ul>
+<p>注意如果没有设置过的话，在所有的层级当中都会默认这个参数为 “channels_last”</p>
+<h2 id="切换后端"><a href="#切换后端" class="headerlink" title="切换后端"></a>切换后端</h2><p>如果你至少运行过一次 Keras，你将在下面的目录下找到 Keras 的配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$HOME</span>/.keras/keras.json</span><br></pre></td></tr></table></figure>
+<p>如果该目录下没有该文件，你可以手动创建一个</p>
+<p>文件的默认配置如下：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="attr">    "image_data_format":</span> <span class="string">"channels_last"</span><span class="string">,</span></span><br><span class="line"><span class="attr">    "epsilon":</span> <span class="number">1e-07</span><span class="string">,</span></span><br><span class="line"><span class="attr">    "floatx":</span> <span class="string">"float32"</span><span class="string">,</span></span><br><span class="line"><span class="attr">    "backend":</span> <span class="string">"tensorflow"</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>将 backend 字段的值改写为你需要使用的后端：theano 或 tensorflow 或者 CNTK，即可完成后端的切换</p>
+<p>我们也可以通过定义环境变量 KERAS_BACKEND 来覆盖上面配置文件中定义的后端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">KERAS_BACKEND=tensorflow python -c <span class="string">"from keras import backend;"</span></span><br><span class="line">Using TensorFlow backend.</span><br></pre></td></tr></table></figure>
+<h1 id="opencv-处理图片"><a href="#opencv-处理图片" class="headerlink" title="opencv 处理图片"></a>opencv 处理图片</h1><p><a href="http://docs.opencv.org/master/" target="_blank" rel="noopener">opencv docs</a></p>
+<p>所有你需要的处理图片的 API 和接口都在上述函数中了，尽情使用</p>
+<h1 id="结果-amp-后续"><a href="#结果-amp-后续" class="headerlink" title="结果 &amp; 后续"></a>结果 &amp; 后续</h1><p>最终模型的表现不怎么样，test acc 只有 25%，不过我本人亲自尝试识别之后发现效果还是不错的，可能是由于女优们长得真的太像了（这是什么原因呢？）也由于我的图片训练素材没有仔细筛选，最后结果不怎么样，训练精度到是达到了 98% 以上，但是这都没什么用</p>
+<p>作为学习和体验的话整个过程下来还是收获颇多，也希望以后能够进一步了解深度学习的魅力</p>
+<p>后面有空的时候可能会再完善优化一下这个东西吧，毕竟可以造福广大宅男</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+          
+            <a href="/tags/opencv/" rel="tag"># opencv</a>
+          
+            <a href="/tags/computer-vision/" rel="tag"># computer vision</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/28/DigitalOcean-Shadowsocks-Namecheap/" rel="next" title="使用 GitHub 学生优惠包进行 DigitalOcean 搭建 VPS 及 Namecheap 域名绑定">
+                <i class="fa fa-chevron-left"></i> 使用 GitHub 学生优惠包进行 DigitalOcean 搭建 VPS 及 Namecheap 域名绑定
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/19/PS-control/" rel="prev" title="PS 基本操作快捷键总结">
+                PS 基本操作快捷键总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Augustus">
+            
+              <p class="site-author-name" itemprop="name">Augustus</p>
+              <div class="site-description motion-element" itemprop="description">The rest is silence</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#绪论"><span class="nav-number">1.</span> <span class="nav-text">绪论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#opencv-安装"><span class="nav-number">2.</span> <span class="nav-text">opencv 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VGG-网络架构"><span class="nav-number">3.</span> <span class="nav-text">VGG 网络架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Keras"><span class="nav-number">4.</span> <span class="nav-text">Keras</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TF-卷积核与-TH-卷积核"><span class="nav-number">4.1.</span> <span class="nav-text">TF 卷积核与 TH 卷积核</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#切换后端"><span class="nav-number">4.2.</span> <span class="nav-text">切换后端</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#opencv-处理图片"><span class="nav-number">5.</span> <span class="nav-text">opencv 处理图片</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结果-amp-后续"><span class="nav-number">6.</span> <span class="nav-text">结果 &amp; 后续</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Augustus</span>
+</div>
+
+<div class="theme-info">
+  <span> 个人博客 </span>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共  字</span>
+  <div class="powered-by"></div>
+</div>
+
+<div class="theme-info">
+  <span> 正在建设 </span>
+</div>
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

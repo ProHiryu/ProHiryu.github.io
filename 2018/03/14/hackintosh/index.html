@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'NXQ581EXU0',
+      apiKey: '9deb5a16a20b7c66b1ef0c8bd12043c7',
+      indexName: 'shq',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="keywords" content="mac,hackintosh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7700k + z270 ar + 华硕 ROG 1070 O8G 安装黑苹果过程">
+<meta property="og:url" content="https://prohiryu.github.io/2018/03/14/hackintosh/index.html">
+<meta property="og:site_name" content="Sic transit gloria mundi">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5gy1fpa9cnhb2qj21hc0xcgms.jpg">
+<meta property="og:updated_time" content="2018-03-14T12:35:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7700k + z270 ar + 华硕 ROG 1070 O8G 安装黑苹果过程">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5gy1fpa9cnhb2qj21hc0xcgms.jpg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://prohiryu.github.io/2018/03/14/hackintosh/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>7700k + z270 ar + 华硕 ROG 1070 O8G 安装黑苹果过程 | Sic transit gloria mundi</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sic transit gloria mundi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://prohiryu.github.io/2018/03/14/hackintosh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Augustus">
+      <meta itemprop="description" content="The rest is silence">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sic transit gloria mundi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">7700k + z270 ar + 华硕 ROG 1070 O8G 安装黑苹果过程
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-03-14 20:14:27 / 修改时间：20:35:42" itemprop="dateCreated datePublished" datetime="2018-03-14T20:14:27+08:00">2018-03-14</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://ww1.sinaimg.cn/large/e1ac6bd5gy1fpa9cnhb2qj21hc0xcgms.jpg" alt="hackintosh"></p>
+<a id="more"></a>
+<p>配置如下:</p>
+<ul>
+<li>CPU : Intel Core i7-7700K</li>
+<li>主板 : ASUS PRIME Z270-AR</li>
+<li>内存 : HyperX FURY 2400MHz DDR4 Non-ECC CL15</li>
+<li>硬盘 : SSD 960 EVO M.2 250GB</li>
+<li>显卡 : ROG STRIX-GTX1070-O8G-GAMING</li>
+<li>显示器 : LG 27UD58-B - 27” IPS LED Monitor - 4K UltraHD</li>
+</ul>
+<p>参考资料和论坛:</p>
+<ul>
+<li><a href="https://www.tonymacx86.com/threads/unibeast-install-macos-high-sierra-on-any-supported-intel-based-pc.235474/" target="_blank" rel="noopener">Install macOS High Sierra on Any Supported Intel-based PC</a></li>
+<li><a href="http://bbs.pcbeta.com/forum-558-1.html" target="_blank" rel="noopener">远景论坛</a></li>
+</ul>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文安装的黑苹果系统为macOS High Sierra 10.13.2（17C88）,在上述配置上亲测可以正常安装使用,各种驱动也可以正常运行，同时后期我还测试了影驰名人堂750ti,不需要修改任何配置也可以完美兼容,如果安装出现问题或者没办法正常运行驱动,请去上述两个论坛中搜索资料或者求助</p>
+<p>UniBeast &amp; MutiBeast:分享地址</p>
+<h1 id="安装过程"><a href="#安装过程" class="headerlink" title="安装过程"></a>安装过程</h1><blockquote>
+<p>根据tonymacx86推荐的安装过程来进行操作</p>
+</blockquote>
+<h2 id="Step-1-Download-macOS-High-Sierra"><a href="#Step-1-Download-macOS-High-Sierra" class="headerlink" title="Step 1: Download macOS High Sierra"></a>Step 1: Download macOS High Sierra</h2><p>一般来说需要一台白苹果来进行这一步的操作,从APP Store中搜索下载macOS High Sierra,安装包会存在/Applications当中</p>
+<p>但是据说在Windows上也是可以成功制作启动U盘,请自己查阅资料吧~</p>
+<h2 id="STEP-2-Create-a-Bootable-USB-Drive-with-UniBeast"><a href="#STEP-2-Create-a-Bootable-USB-Drive-with-UniBeast" class="headerlink" title="STEP 2: Create a Bootable USB Drive with UniBeast"></a>STEP 2: Create a Bootable USB Drive with UniBeast</h2><ol>
+<li><p>插入U盘（容量大于16G）</p>
+</li>
+<li><p>打开磁盘工具,抹掉U盘,进行格式化,选择Mac OS Extended (Journaled),Mac OS 扩展（日志式）</p>
+</li>
+<li><p>下载并打开Unibeast,一直同意并继续下去即可,选择UEFI Boot Mode（需要主板支持）,对于10系以后的显卡,Graphics Configuration不要进行勾选,后续手动安装驱动</p>
+</li>
+<li><p>等待时间还是较长的,由于我使用的是type-C接口（双接口U盘）,速度还算快</p>
+</li>
+<li><p>将MutiBeast拖入到启动U盘中</p>
+</li>
+</ol>
+<h2 id="STEP-3-Recommended-BIOS-Settings"><a href="#STEP-3-Recommended-BIOS-Settings" class="headerlink" title="STEP 3: Recommended BIOS Settings"></a>STEP 3: Recommended BIOS Settings</h2><ol>
+<li><p>进入BIOS,先加载默认配置</p>
+</li>
+<li><p>如果CPU支持VT-d,禁用</p>
+</li>
+<li><p>如果系统开启了CFG-Lock,禁用</p>
+</li>
+<li><p>如果系统开启了安全系统模式,禁用</p>
+</li>
+<li><p>选择启动系统类型为其他</p>
+</li>
+<li><p>如果系统开启了IO Serial Port,禁用</p>
+</li>
+<li><p>打开支持XHCI Handoff</p>
+</li>
+</ol>
+<blockquote>
+<p>对了,后续如果要使用Parallels Desktop安装虚拟机,记得安装成功后把VT-d打开,不然会一直闪报错而安装不了虚拟机</p>
+</blockquote>
+<h2 id="STEP-4-Install-macOS-High-Sierra"><a href="#STEP-4-Install-macOS-High-Sierra" class="headerlink" title="STEP 4: Install macOS High Sierra"></a>STEP 4: Install macOS High Sierra</h2><ol>
+<li><p>开机设置从U盘启动（F12 for Gigabyte motherboards, F8 for ASUS motherboards, F11 for ASrock motherboards）</p>
+</li>
+<li><p>选择Boot OS X Install from Install macOS High Sierra</p>
+</li>
+<li><p>选择语言,然后打开磁盘工具,将目标磁盘格式化为Mac OS Extended (Journaled),名字为Hackintosh,然后关闭磁盘工具继续安装</p>
+</li>
+<li><p>系统将会进行大约两次的重启,选择相同选项启动即可</p>
+</li>
+<li><p>安装完成之后,在启动项中选择Boot High Sierra from Hackintosh,进入系统</p>
+</li>
+</ol>
+<h2 id="STEP-5-Post-Installation-with-MultiBeast（安装驱动）"><a href="#STEP-5-Post-Installation-with-MultiBeast（安装驱动）" class="headerlink" title="STEP 5: Post Installation with MultiBeast（安装驱动）"></a>STEP 5: Post Installation with MultiBeast（安装驱动）</h2><ol>
+<li><p>打开MultiBeast</p>
+</li>
+<li><p>QuickStart: UEFI Boot Mode</p>
+</li>
+<li><p>Drivers：</p>
+<ul>
+<li>Audio：VoodooHDA v2.8.9</li>
+<li>Disk：3rd Party SATA &amp; 3rd Party eSATA &amp; Intel Generic AHCI SATA</li>
+<li>Misc：FakeSMC</li>
+<li>Network：IntelMausiEthernet v2.3.0</li>
+</ul>
+</li>
+<li><p>Booloaders：Clover UEFI Boot Mode + Emulated NVRAM</p>
+</li>
+<li><p>Customize:</p>
+<ul>
+<li>Graphics Configuration：Intel HD 6xx &amp; Intel Graphics Fixup</li>
+<li>SSDT Options：Sandy Bridge Core i7</li>
+<li>System Definitions：iMac 14，2</li>
+</ul>
+</li>
+<li><p>点击Build 然后 Install</p>
+</li>
+<li><p>下载对应显卡驱动 <a href="https://www.tonymacx86.com/threads/nvidia-releases-alternate-graphics-drivers-for-macos-high-sierra-10-13-3-387-10-10-10-25.243857/" target="_blank" rel="noopener">显卡驱动</a></p>
+</li>
+<li><p>打开显卡驱动进行安装</p>
+</li>
+<li><p>配置EFI文件:/Volumes/EFI/EFI/CLOVER/config.plist</p>
+ <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&lt;key&gt;SystemParameters&lt;/key&gt;</span></span><br><span class="line"><span class="string">&lt;dict&gt;</span></span><br><span class="line">    <span class="string">&lt;key&gt;InjectKexts&lt;/key&gt;</span></span><br><span class="line">    <span class="string">&lt;string&gt;YES&lt;/string&gt;</span></span><br><span class="line">    <span class="string">&lt;key&gt;InjectSystemID&lt;/key&gt;</span></span><br><span class="line">    <span class="string">&lt;true/&gt;</span></span><br><span class="line">    <span class="string">&lt;key&gt;NvidiaWeb&lt;/key&gt;</span></span><br><span class="line">    <span class="string">&lt;true/&gt;</span></span><br><span class="line"><span class="string">&lt;/dict&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启即可</p>
+</li>
+</ol>
+<h2 id="挂载EFI至硬盘"><a href="#挂载EFI至硬盘" class="headerlink" title="挂载EFI至硬盘"></a>挂载EFI至硬盘</h2><p>参考<a href="http://blog.csdn.net/skykingf/article/details/13020025" target="_blank" rel="noopener">博客</a></p>
+<p>挂载完成后，就可以拔掉U盘，在bios中设置从硬盘启动即可正常启动</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>黑苹果的第一要义就是去尝试，虽然尝试有可能会失败，但是不尝试永远成功不了，希望大家都成功安装~</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mac/" rel="tag"># mac</a>
+          
+            <a href="/tags/hackintosh/" rel="tag"># hackintosh</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/24/Tensorflow-Cuda-Windows10/" rel="next" title="安装Tensorflow-gpu + Cuda8.0 Windows10版本">
+                <i class="fa fa-chevron-left"></i> 安装Tensorflow-gpu + Cuda8.0 Windows10版本
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Augustus">
+            
+              <p class="site-author-name" itemprop="name">Augustus</p>
+              <div class="site-description motion-element" itemprop="description">The rest is silence</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装过程"><span class="nav-number">2.</span> <span class="nav-text">安装过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-1-Download-macOS-High-Sierra"><span class="nav-number">2.1.</span> <span class="nav-text">Step 1: Download macOS High Sierra</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STEP-2-Create-a-Bootable-USB-Drive-with-UniBeast"><span class="nav-number">2.2.</span> <span class="nav-text">STEP 2: Create a Bootable USB Drive with UniBeast</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STEP-3-Recommended-BIOS-Settings"><span class="nav-number">2.3.</span> <span class="nav-text">STEP 3: Recommended BIOS Settings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STEP-4-Install-macOS-High-Sierra"><span class="nav-number">2.4.</span> <span class="nav-text">STEP 4: Install macOS High Sierra</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STEP-5-Post-Installation-with-MultiBeast（安装驱动）"><span class="nav-number">2.5.</span> <span class="nav-text">STEP 5: Post Installation with MultiBeast（安装驱动）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#挂载EFI至硬盘"><span class="nav-number">2.6.</span> <span class="nav-text">挂载EFI至硬盘</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后记"><span class="nav-number">3.</span> <span class="nav-text">后记</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Augustus</span>
+</div>
+
+<div class="theme-info">
+  <span> 个人博客 </span>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共  字</span>
+  <div class="powered-by"></div>
+</div>
+
+<div class="theme-info">
+  <span> 正在建设 </span>
+</div>
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

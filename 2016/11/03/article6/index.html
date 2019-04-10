@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'NXQ581EXU0',
+      apiKey: '9deb5a16a20b7c66b1ef0c8bd12043c7',
+      indexName: 'shq',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="今天直接捡重点的讲吧，不重要的部分都跳过去了今天主要内容是SIEM的整个架构 PART II IT Threat Intelligence Using SIEM Systems CHAPTER 5 The Anatomy of a SIEM 首先是整个SIEM的流程图：">
+<meta name="keywords" content="Security,SIEM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="security information and event management 学习初探（三）">
+<meta property="og:url" content="https://prohiryu.github.io/2016/11/03/article6/index.html">
+<meta property="og:site_name" content="Sic transit gloria mundi">
+<meta property="og:description" content="今天直接捡重点的讲吧，不重要的部分都跳过去了今天主要内容是SIEM的整个架构 PART II IT Threat Intelligence Using SIEM Systems CHAPTER 5 The Anatomy of a SIEM 首先是整个SIEM的流程图：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://img.blog.csdn.net/20160719203709176">
+<meta property="og:image" content="http://img.blog.csdn.net/20160719210834987">
+<meta property="og:image" content="http://img.blog.csdn.net/20160719211024600">
+<meta property="og:image" content="http://img.blog.csdn.net/20160719211306567">
+<meta property="og:image" content="http://img.blog.csdn.net/20160719211329926">
+<meta property="og:updated_time" content="2017-05-05T07:17:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="security information and event management 学习初探（三）">
+<meta name="twitter:description" content="今天直接捡重点的讲吧，不重要的部分都跳过去了今天主要内容是SIEM的整个架构 PART II IT Threat Intelligence Using SIEM Systems CHAPTER 5 The Anatomy of a SIEM 首先是整个SIEM的流程图：">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20160719203709176">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://prohiryu.github.io/2016/11/03/article6/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>security information and event management 学习初探（三） | Sic transit gloria mundi</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sic transit gloria mundi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://prohiryu.github.io/2016/11/03/article6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Augustus">
+      <meta itemprop="description" content="The rest is silence">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sic transit gloria mundi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">security information and event management 学习初探（三）
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-03 21:48:57" itemprop="dateCreated datePublished" datetime="2016-11-03T21:48:57+08:00">2016-11-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2017-05-05 15:17:23" itemprop="dateModified" datetime="2017-05-05T15:17:23+08:00">2017-05-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/SIEM/" itemprop="url" rel="index"><span itemprop="name">SIEM</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天直接捡重点的讲吧，不重要的部分都跳过去了<br>今天主要内容是SIEM的整个架构</p>
+<p>PART II IT Threat Intelligence Using SIEM Systems</p>
+<p>CHAPTER 5 The Anatomy of a SIEM</p>
+<p>首先是整个SIEM的流程图：<br><img src="http://img.blog.csdn.net/20160719203709176" alt="这里写图片描述"></p>
+<a id="more"></a>
+<p><strong>Source Device：</strong></p>
+<p>router, switch, or some type of server logs from an application</p>
+<p>resources：<br>1.Operating Systems：Linux and UNIX, AIX, Mac OS X<br>2.Appliances：black box systems （router or a switch）<br>3.Applications：</p>
+<pre><code>off-the-shelf applications：Domain Name System (DNS), dynamic host configuration protocol (DHCP), various types of web servers, various types of email systems, and a multitude of other types of applications
+home-grown or custom-built applications：相对来说难一点，但不是不可能
+</code></pre><p>Determining Needed Logs：<br>One thing you might want to consider is that not all logs are needed from all devices.</p>
+<p>types of logs<br>types of devices</p>
+<p><strong>things to consider：</strong><br>device’s priority<br>the size of the logs generated during a specific period of time<br>rate does this source generate logs<br>the network links like between the source and the SIEM<br>the logs in realtime or can you set up a batch process at specific times during the day</p>
+<p>besides need more variables，and buffers -&gt; worm outbreak / DOS….</p>
+<p><strong>Log Collection：</strong></p>
+<p>Push Log Collection<br>说白了就是每个device将自己产生的日志文件主动传递到SIEM的指定的server上</p>
+<p>benifit：ease of setup and configuration at the SIEM<br>disadvantage：UDP failed sending、attacker inject garbage data</p>
+<p>Pull Log Collection<br>相对应的，这种方式需要SIEM自己构建一个connection到源设备，然后取得log，区别的方法很简单就是看哪一端是日志流的发起者和终结者<br>disadvantage：关于这个方法，缺点就是非实时的，根据系统要求要实现的功能不一样</p>
+<p>Prebuilt Log Collection：将log文件的格式重构，形成SIEM能看懂的standard的文件</p>
+<p>Custom Log Collection：对于那些本身不支持SIEM的软件或者设备，需要自己构建一个log收集系统（own method to collect logs）</p>
+<p>Mixed Environments：（4kinds）</p>
+<ul>
+<li>software：Cisco ASA Snort IDS     </li>
+<li>OS：RedHat Linux Windows 2003</li>
+<li>database：MySQL</li>
+</ul>
+<p><strong>Parsing/Normalization of Logs：</strong><br> 一句话，类型转换many types -&gt; single format<br> 结果如下：<br> <img src="http://img.blog.csdn.net/20160719210834987" alt="这里写图片描述"></p>
+<p><strong>Rule Engine/Correlation Engine：</strong></p>
+<p>rules：类似于IDS实验当中我们在snort当中写的规则，具体判断过程如下：<br><img src="http://img.blog.csdn.net/20160719211024600" alt="这里写图片描述"></p>
+<p>correlation：<br><strong>It groups individual events, which can make up a part of a possible malicious incident, into a single event displayed on the console of an operator monitoring your environment.</strong></p>
+<p>example：brute-force login<br><img src="http://img.blog.csdn.net/20160719211306567" alt="这里写图片描述"><br>after correlating：<br><img src="http://img.blog.csdn.net/20160719211329926" alt="这里写图片描述"></p>
+<p>rules：If [(failed logins &gt;= 3) and then (Successful Login)] from the same source within 20 seconds = Possible Brute Force Compromise</p>
+<p><strong>Log Storage：</strong></p>
+<ul>
+<li>Database：Oracle, MySQL, Microsoft SQL   （need DBA）</li>
+<li>Flat Text File：slower  but much easier to access</li>
+<li>Binary File：——</li>
+</ul>
+<p><strong>Monitoring：</strong><br>one word：interface</p>
+<p><strong>Summary</strong><br>A SIEM is composed of many parts, each doing a separate job. Remember, each of these systems can run independently of the others, but without them all running in unison, you will not have an effective SIEM. Depending on the system you are using, there may be more pieces added to that specific SIEM, but each SIEM will always have the basic underlying systems as described in this chapter. By understanding each part of the SIEM, what each piece does and how it works, you will be able to manage your SIEM effectively and troubleshoot issues as they arise.</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Security/" rel="tag"># Security</a>
+          
+            <a href="/tags/SIEM/" rel="tag"># SIEM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/03/article5/" rel="next" title="security information and event management 学习初探（二）">
+                <i class="fa fa-chevron-left"></i> security information and event management 学习初探（二）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/03/article7/" rel="prev" title="security information and event management 学习初探（四）">
+                security information and event management 学习初探（四） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Augustus">
+            
+              <p class="site-author-name" itemprop="name">Augustus</p>
+              <div class="site-description motion-element" itemprop="description">The rest is silence</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Augustus</span>
+</div>
+
+<div class="theme-info">
+  <span> 个人博客 </span>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共  字</span>
+  <div class="powered-by"></div>
+</div>
+
+<div class="theme-info">
+  <span> 正在建设 </span>
+</div>
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'NXQ581EXU0',
+      apiKey: '9deb5a16a20b7c66b1ef0c8bd12043c7',
+      indexName: 'shq',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="use tensorflow inception   开头之前一直有想过需要做一个图片分类器，答应过一个人，但是一直自己写的网络太不理想，参考了很多文献，太过于复杂的网络也没办法自己实现，于是只能借助谷歌爸爸的实力了，虽然不是自己写的，但是训练完成之后还有一种是自己做出来的东西一样的错觉，主要目的一开始就是为了给我喜欢的花朵分个类，最后就变成所有的图片均可以进行分类了，具体的 inception">
+<meta name="keywords" content="python,machine learning,deep learning,tensorflow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Custom Image Classify with Tensorflow">
+<meta property="og:url" content="https://prohiryu.github.io/2017/05/23/Custom-Image-Classify-with-Tensorflow/index.html">
+<meta property="og:site_name" content="Sic transit gloria mundi">
+<meta property="og:description" content="use tensorflow inception   开头之前一直有想过需要做一个图片分类器，答应过一个人，但是一直自己写的网络太不理想，参考了很多文献，太过于复杂的网络也没办法自己实现，于是只能借助谷歌爸爸的实力了，虽然不是自己写的，但是训练完成之后还有一种是自己做出来的东西一样的错觉，主要目的一开始就是为了给我喜欢的花朵分个类，最后就变成所有的图片均可以进行分类了，具体的 inception">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5ly1ffvd8ntx24j20n10d0gnx.jpg">
+<meta property="og:updated_time" content="2017-06-03T11:04:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Custom Image Classify with Tensorflow">
+<meta name="twitter:description" content="use tensorflow inception   开头之前一直有想过需要做一个图片分类器，答应过一个人，但是一直自己写的网络太不理想，参考了很多文献，太过于复杂的网络也没办法自己实现，于是只能借助谷歌爸爸的实力了，虽然不是自己写的，但是训练完成之后还有一种是自己做出来的东西一样的错觉，主要目的一开始就是为了给我喜欢的花朵分个类，最后就变成所有的图片均可以进行分类了，具体的 inception">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5ly1ffvd8ntx24j20n10d0gnx.jpg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://prohiryu.github.io/2017/05/23/Custom-Image-Classify-with-Tensorflow/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Custom Image Classify with Tensorflow | Sic transit gloria mundi</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sic transit gloria mundi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://prohiryu.github.io/2017/05/23/Custom-Image-Classify-with-Tensorflow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Augustus">
+      <meta itemprop="description" content="The rest is silence">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sic transit gloria mundi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Custom Image Classify with Tensorflow
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-05-23 15:56:53" itemprop="dateCreated datePublished" datetime="2017-05-23T15:56:53+08:00">2017-05-23</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2017-06-03 19:04:08" itemprop="dateModified" datetime="2017-06-03T19:04:08+08:00">2017-06-03</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>use tensorflow inception</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/e1ac6bd5ly1ffvd8ntx24j20n10d0gnx.jpg" alt></p>
+<h1 id="开头"><a href="#开头" class="headerlink" title="开头"></a>开头</h1><p>之前一直有想过需要做一个图片分类器，答应过一个人，但是一直自己写的网络太不理想，参考了很多文献，太过于复杂的网络也没办法自己实现，于是只能借助谷歌爸爸的实力了，虽然不是自己写的，但是训练完成之后还有一种是自己做出来的东西一样的错觉，主要目的一开始就是为了给我喜欢的花朵分个类，最后就变成所有的图片均可以进行分类了，具体的 inception 网络构造，在网上一查一大把，这里就不再赘述，我们训练的是 inception 网络的最后一层，更改一下输出也会有不错的效果，至于前面就不要太大动作去更改了，第一部分是自己失败的摸索，也放在这里吸取一点经验吧。</p>
+<a id="more"></a>
+<hr>
+<h1 id="直接重新训练"><a href="#直接重新训练" class="headerlink" title="直接重新训练"></a>直接重新训练</h1><h2 id="Reformat-flower-data"><a href="#Reformat-flower-data" class="headerlink" title="Reformat flower-data"></a>Reformat flower-data</h2><ol>
+<li><code>INCEPTION_MODEL_DIR=$HOME/work/temp/inception-v3-model</code></li>
+<li><code>mkdir -p ${INCEPTION_MODEL_DIR}</code></li>
+<li><code>cd ${INCEPTION_MODEL_DIR}</code></li>
+<li><code>curl -O http://download.tensorflow.org/models/image/imagenet/inception-v3-2016-03-01.tar.gzcurl -O http://download.tensorflow.org/models/image/imagenet/inception-v3-2016-03-01.tar.gz</code></li>
+<li><code>tar xzf inception-v3-2016-03-01.tar.gz</code></li>
+<li><code>MODEL_PATH=&quot;${INCEPTION_MODEL_DIR}/inception-v3/model.ckpt-157585&quot;</code></li>
+<li><code>TRAIN_DIR=$HOME/work/flower-recognition/dataset</code></li>
+<li><code>VALIDATION_DIR=$HOME/work/flower-recognition/dataset2</code></li>
+<li><p>In particular, you will need to create a directory of training images that reside within $TRAIN_DIR and $VALIDATION_DIR arranged as such:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$train_dir</span>/dog/image0.jpeg</span><br><span class="line"><span class="variable">$TRAIN_DIR</span>/dog/image1.jpg</span><br><span class="line"><span class="variable">$TRAIN_DIR</span>/dog/image2.png</span><br><span class="line">...</span><br><span class="line"><span class="variable">$TRAIN_DIR</span>/cat/weird-image.jpeg</span><br><span class="line"><span class="variable">$TRAIN_DIR</span>/cat/my-image.jpeg</span><br><span class="line"><span class="variable">$TRAIN_DIR</span>/cat/my-image.JPG</span><br><span class="line">...</span><br><span class="line"><span class="variable">$VALIDATION_DIR</span>/dog/imageA.jpeg</span><br><span class="line"><span class="variable">$VALIDATION_DIR</span>/dog/imageB.jpg</span><br><span class="line"><span class="variable">$VALIDATION_DIR</span>/dog/imageC.png</span><br><span class="line">...</span><br><span class="line"><span class="variable">$VALIDATION_DIR</span>/cat/weird-image.PNG</span><br><span class="line"><span class="variable">$VALIDATION_DIR</span>/cat/that-image.jpg</span><br><span class="line"><span class="variable">$VALIDATION_DIR</span>/cat/cat.JPG</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">OUTPUT_DIRECTORY=<span class="variable">$HOME</span>/work/flower-recognition/final_data/</span><br><span class="line">python3 ~/work/models/inception/inception/data/build_image_data.py \</span><br><span class="line">--train_directory=<span class="string">"<span class="variable">$&#123;TRAIN_DIR&#125;</span>"</span> \</span><br><span class="line">--validation_directory=<span class="string">"<span class="variable">$&#123;VALIDATION_DIR&#125;</span>"</span> \</span><br><span class="line">--output_directory=<span class="string">"<span class="variable">$&#123;OUTPUT_DIRECTORY&#125;</span>"</span> \</span><br><span class="line">--labels_file=<span class="string">"<span class="variable">$&#123;LABELS_FILE&#125;</span>"</span> \</span><br><span class="line">--train_shards=128 \</span><br><span class="line">--validation_shards=24 \</span><br><span class="line">--num_threads=8</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="Retrain-the-model"><a href="#Retrain-the-model" class="headerlink" title="Retrain the model"></a>Retrain the model</h2><ol>
+<li><code>FLOWERS_DATA_DIR=$HOME/work/flower-recognition/final_data/</code></li>
+<li><code>TRAIN_DIR=$HOME/work/temp/flowers_train/</code></li>
+<li><code>MODEL_PATH=&quot;${INCEPTION_MODEL_DIR}/inception-v3/model.ckpt-157585&quot;</code></li>
+<li><p>retrain the dataset</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">python3 ~/work/models/inception/inception/flowers_train.py --train_dir=<span class="string">"<span class="variable">$&#123;TRAIN_DIR&#125;</span>"</span> \</span><br><span class="line">--data_dir=<span class="string">"<span class="variable">$&#123;FLOWERS_DATA_DIR&#125;</span>"</span> \</span><br><span class="line">--pretrained_model_checkpoint_path=<span class="string">"<span class="variable">$&#123;MODEL_PATH&#125;</span>"</span> \</span><br><span class="line">--fine_tune=True \</span><br><span class="line">--initial_learning_rate=0.001 \</span><br><span class="line">--input_queue_memory_factor=1</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="Problems"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</h2><p>最后会发现我的电脑上会不断的跑，不停地训练，具体我也不知道是什么原因，但是至少目前还没有找到解决办法，所以只能等以后再说了。没有 GPU 加持的电脑确实不太适合做深度学习相关的 tutorial ，以后有机会可以用 GPU 尝试一下，估计还是训练速度的问题。具体的任何操作与问题可以参考 <a href="https://github.com/tensorflow/models/tree/master/inception" target="_blank" rel="noopener">inception</a> ，关于这一种方法重新训练 Google Models 暂时就只研究到这里了，考虑下下面的 Docker 的方法。</p>
+<h1 id="在-Docker-中实现"><a href="#在-Docker-中实现" class="headerlink" title="在 Docker 中实现"></a>在 Docker 中实现</h1><h2 id="安装-Docker-与测试"><a href="#安装-Docker-与测试" class="headerlink" title="安装 Docker 与测试"></a>安装 Docker 与测试</h2><p>从 <a href="https://www.docker.com/community-edition" target="_blank" rel="noopener">docker</a> 官方网站下载对应的镜像文件安装就可以了，当安装完成之后，需要对 docker 是否正确运行进行检测，输入以下命令，如果没有报错那么说明一切顺利，可以开始进行下一步。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run hello-world</span><br></pre></td></tr></table></figure>
+<h2 id="在-Docker-中安装-Tensorflow-并测试"><a href="#在-Docker-中安装-Tensorflow-并测试" class="headerlink" title="在 Docker 中安装 Tensorflow 并测试"></a>在 Docker 中安装 Tensorflow 并测试</h2><p>Docker 并不自带 Tensorflow 包，因此需要手动从 Docker 镜像源上下载，输入以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it tensorflow/tensorflow:1.1.0 bash</span><br></pre></td></tr></table></figure>
+<p>如果之前没有安装过 Tensorflow，就会自动从官网上下载，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Unable to find image <span class="string">'tensorflow/tensorflow:1.1.0'</span> locally</span><br><span class="line">1.1.0: Pulling from tensorflow/tensorflow</span><br><span class="line">c62795f78da9: Pull complete</span><br><span class="line">d4fceeeb758e: Pull complete</span><br><span class="line">5c9125a401ae: Pull complete</span><br><span class="line">0062f774e994: Pull complete</span><br><span class="line">6b33fd031fac: Pull complete</span><br><span class="line">353b34ef0a98: Pull complete</span><br><span class="line">4f6aefc14b68: Pull complete</span><br><span class="line">ce066374c6ca: Pull complete</span><br><span class="line">c0755a91ab3a: Pull complete</span><br><span class="line">f03279b52d25: Pull complete</span><br><span class="line">d1c27c29b7e3: Pull complete</span><br><span class="line">23807c5f4b3e: Pull complete</span><br><span class="line">Digest: sha256:27bd43f1cf71c45eb48cb6e067b7cef47b168ac11c685d55a3495d27f0d59543</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> tensorflow/tensorflow:1.1.0</span><br></pre></td></tr></table></figure>
+<p>最后进入下面这个状态说明安装成功。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@38038715aa2f:/notebooks<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>输入 python，进入 python 命令行编辑界面，输入以下命令：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">hello = tf.constant(<span class="string">'Hello, TensorFlow!'</span>)</span><br><span class="line">sess = tf.Session() <span class="comment"># It will print some warnings here.</span></span><br><span class="line">print(sess.run(hello))</span><br></pre></td></tr></table></figure>
+<p>如果系统正确输出了 “Hello TensorFlow!”，则说明整个 Docker 以及 Tensorflow 运行正常，可以开始进行下一步的操作了。’Ctrl-d’离开 Docker</p>
+<h2 id="创建文件夹及运行"><a href="#创建文件夹及运行" class="headerlink" title="创建文件夹及运行"></a>创建文件夹及运行</h2><p>在需要运行本程序的地方创建一个文件夹，用于和 Docker 内核进行数据交互，方便进行训练，然后输入以下代码，重新打开 Docker：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it \</span><br><span class="line">  --publish 6006:6006 \</span><br><span class="line">  --volume <span class="variable">$&#123;HOME&#125;</span>/work/flower-recognition/tf_files:/tf_files \</span><br><span class="line">  --workdir /tf_files \</span><br><span class="line">  tensorflow/tensorflow:1.1.0 bash</span><br></pre></td></tr></table></figure>
+<p>其中 tf_files 是创建的文件夹的具体位置，运行正常的话会收到如 <code>root@xxxxxxxxx:/tf_files#</code> 这样的提示。</p>
+<h2 id="获取图片数据集"><a href="#获取图片数据集" class="headerlink" title="获取图片数据集"></a>获取图片数据集</h2><p>这个可以从网络上自己直接获取你需要进行分类的种类的图片集合即可，我这里使用了杜鹃花的种类，这个可以直接在 Chrome 浏览器上应用插件批量获得谷歌提供的图片，当然如果需要用作商用的话尽量避开那些有版权的图片就可以了，如果不想自己动手麻烦的话，可以参考以下的官方提供的数据集：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ curl -O http://download.tensorflow.org/example_images/flower_photos.tgz tar xzf flower_photos.tgz</span><br><span class="line">$ ls flower_photos</span><br></pre></td></tr></table></figure>
+<p>增加训练效率，减少图片数量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ls flower_photos/roses | wc -l</span><br><span class="line">$ rm flower_photos/*/[3-9]*</span><br><span class="line">$ ls flower_photos/roses | wc -l</span><br></pre></td></tr></table></figure>
+<h2 id="进行自定义训练"><a href="#进行自定义训练" class="headerlink" title="进行自定义训练"></a>进行自定义训练</h2><p>首先需要从 Tensorflow 下载 inception 的训练脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -O https://raw.githubusercontent.com/tensorflow/tensorflow/r1.1/tensorflow/examples/image_retraining/retrain.py</span><br></pre></td></tr></table></figure>
+<p>获得了脚本之后，将自定义的数据集放入 <code>/tf_files</code> 当中，然后打开 Tensorflow 监控器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tensorboard --logdir training_summaries &amp;</span><br></pre></td></tr></table></figure>
+<p>如果已经打开了，就可以用 <code>pkill -f &quot;tensorboard&quot;</code> 杀死即可，接下来开始正式的训练，设置各种参数配合脚本运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ python retrain.py \</span><br><span class="line">  --bottleneck_dir=bottlenecks \</span><br><span class="line">  --how_many_training_steps=500 \</span><br><span class="line">  --model_dir=inception \</span><br><span class="line">  --summaries_dir=training_summaries/basic \</span><br><span class="line">  --output_graph=retrained_graph.pb \</span><br><span class="line">  --output_labels=retrained_labels.txt \</span><br><span class="line">  --image_dir=dataset</span><br></pre></td></tr></table></figure>
+<p>如果遇到 <code>[Errno socket error] [Errno 101] Network is unreachable</code> 报错的话，那没办法了，开关多几次 VPN，使用不同的路线，网络不能连接到的话，都是属于玄学的问题，毕竟在国内有方教授的墙横着，大家都没什么办法。</p>
+<p>如果遇到 <code>ERRO[XXXX] error getting events from daemon: EOF</code> 这种 bug 的话，需要配置你的 CPU 核数？具体我也不是很懂，因为没有遇到，详情可以参考 <a href="https://github.com/moby/moby/issues/31220" target="_blank" rel="noopener">issue</a>，应该是进行小配置即可。</p>
+<p>一切顺利的话，你的 terminal 会出现下面的输出，接下来就只需要等待训练结束即可了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2017-05-23 06:45:41.577876: Step 240: Validation accuracy = 89.0% (N=100)</span><br><span class="line">2017-05-23 06:45:48.890883: Step 250: Train accuracy = 100.0%</span><br><span class="line">2017-05-23 06:45:48.890964: Step 250: Cross entropy = 0.056585</span><br></pre></td></tr></table></figure>
+<p>如果你对你的机器非常有自信的话，CPU 强大的话（至少不能像我这种），可以考虑采取准确率更高的方式进行训练，上述的例子训练步数才 500，如果你没有在刚刚步骤当中减少对应的图片集的话，也就是说如果你有巨大的数据集需要处理的话，500 步是显然不够的，需要使用默认的 4000 步就可以了，如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ python /tensorflow/tensorflow/examples/image_retraining/retrain.py \</span><br><span class="line">  --bottleneck_dir=bottlenecks \</span><br><span class="line">  --model_dir=inception \</span><br><span class="line">  --summaries_dir=training_summaries/long \</span><br><span class="line">  --output_graph=retrained_graph.pb \</span><br><span class="line">  --output_labels=retrained_labels.txt \</span><br><span class="line">  --image_dir=dataset</span><br></pre></td></tr></table></figure>
+<p>关于 CNN 的具体知识就不在这里赘述了，以后有机会的话会详细在记录一下学习的过程，如果你的脚本训练顺利的话，会得到以下的结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Final <span class="built_in">test</span> accuracy = 84.6% (N=13)</span><br><span class="line">Converted 2 variables to const ops.</span><br></pre></td></tr></table></figure>
+<h2 id="使用训练好的模型"><a href="#使用训练好的模型" class="headerlink" title="使用训练好的模型"></a>使用训练好的模型</h2><p>训练好的模型会自动生成在 <code>tf_files/retrained_graph.pb</code>，其中还有一些其他文件，比如样本标签文件 <code>tf_files/retrained_labels.txt</code> 等，有了这些文件之后就可以像 <a href="https://www.tensorflow.org/versions/master/tutorials/image_recognition" target="_blank" rel="noopener">picture_recognition</a> 上所写的一样了，PS：最初我也是从这里开始接触图片分类的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os, sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">os.environ[<span class="string">'TF_CPP_MIN_LOG_LEVEL'</span>] = <span class="string">'2'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># change this as you see fit</span></span><br><span class="line">image_path = sys.argv[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read in the image_data</span></span><br><span class="line">image_data = tf.gfile.FastGFile(image_path, <span class="string">'rb'</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Loads label file, strips off carriage return</span></span><br><span class="line">label_lines = [line.rstrip() <span class="keyword">for</span> line</span><br><span class="line">                   <span class="keyword">in</span> tf.gfile.GFile(<span class="string">"retrained_labels.txt"</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Unpersists graph from file</span></span><br><span class="line"><span class="keyword">with</span> tf.gfile.FastGFile(<span class="string">"retrained_graph.pb"</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    graph_def = tf.GraphDef()</span><br><span class="line">    graph_def.ParseFromString(f.read())</span><br><span class="line">    tf.import_graph_def(graph_def, name=<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    <span class="comment"># Feed the image_data as input to the graph and get first prediction</span></span><br><span class="line">    softmax_tensor = sess.graph.get_tensor_by_name(<span class="string">'final_result:0'</span>)</span><br><span class="line"></span><br><span class="line">    predictions = sess.run(softmax_tensor, \</span><br><span class="line">             &#123;<span class="string">'DecodeJpeg/contents:0'</span>: image_data&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Sort to show labels of first prediction in order of confidence</span></span><br><span class="line">    top_k = predictions[<span class="number">0</span>].argsort()[-len(predictions[<span class="number">0</span>]):][::<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> node_id <span class="keyword">in</span> top_k:</span><br><span class="line">        human_string = label_lines[node_id]</span><br><span class="line">        score = predictions[<span class="number">0</span>][node_id]</span><br><span class="line">        print(<span class="string">'%s (score = %.5f)'</span> % (human_string, score))</span><br></pre></td></tr></table></figure>
+<p>大概的分类功能照着上面的 python 文件进行编写就可以了，可以直接从网路获取对应的 python 脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -L https://goo.gl/3lTKZs &gt; label_image.py</span><br></pre></td></tr></table></figure>
+<p>然后将需要分类的图片测试集放到路径中，运行脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 label_image.py IMG_3941.JPG</span><br></pre></td></tr></table></figure>
+<p>最后的结果如下，结果不是特别理想，虽然最后确实分类正确了，但是误差还是较大，可能是由于图片集没有太杂乱，也不够大的原因，有空再好好优化一下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">azalea (score = 0.56057)</span><br><span class="line">aconite (score = 0.43943)</span><br></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>一直以来就想实现一个自己的图片分类器，但是自己实现的，像我这种水平又怎么能有 inception 这种水平的分类器出来，最后似乎不得已妥协了，谷歌就谷歌吧，毕竟世界都是谷歌的，手动滑稽，以上所有的教程大部分都是按照<a href="https://codelabs.developers.google.com/codelabs/tensorflow-for-poets/#1" target="_blank" rel="noopener">the tensorflow for poets</a>的讲义来的，当然第一部分也是我自己摸索的，第二部分按照谷歌官方的 tensorflow 教程基本都可以完成，也希望终有一天能从利用别人的模型到实现自己的模型。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+          
+            <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+          
+            <a href="/tags/tensorflow/" rel="tag"># tensorflow</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/05/Hexo-Next-Settings/" rel="next" title="Hexo Next 自定义配置">
+                <i class="fa fa-chevron-left"></i> Hexo Next 自定义配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/28/DigitalOcean-Shadowsocks-Namecheap/" rel="prev" title="使用 GitHub 学生优惠包进行 DigitalOcean 搭建 VPS 及 Namecheap 域名绑定">
+                使用 GitHub 学生优惠包进行 DigitalOcean 搭建 VPS 及 Namecheap 域名绑定 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Augustus">
+            
+              <p class="site-author-name" itemprop="name">Augustus</p>
+              <div class="site-description motion-element" itemprop="description">The rest is silence</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开头"><span class="nav-number">1.</span> <span class="nav-text">开头</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#直接重新训练"><span class="nav-number">2.</span> <span class="nav-text">直接重新训练</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reformat-flower-data"><span class="nav-number">2.1.</span> <span class="nav-text">Reformat flower-data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Retrain-the-model"><span class="nav-number">2.2.</span> <span class="nav-text">Retrain the model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Problems"><span class="nav-number">2.3.</span> <span class="nav-text">Problems</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在-Docker-中实现"><span class="nav-number">3.</span> <span class="nav-text">在 Docker 中实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-Docker-与测试"><span class="nav-number">3.1.</span> <span class="nav-text">安装 Docker 与测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在-Docker-中安装-Tensorflow-并测试"><span class="nav-number">3.2.</span> <span class="nav-text">在 Docker 中安装 Tensorflow 并测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建文件夹及运行"><span class="nav-number">3.3.</span> <span class="nav-text">创建文件夹及运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取图片数据集"><span class="nav-number">3.4.</span> <span class="nav-text">获取图片数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进行自定义训练"><span class="nav-number">3.5.</span> <span class="nav-text">进行自定义训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用训练好的模型"><span class="nav-number">3.6.</span> <span class="nav-text">使用训练好的模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Augustus</span>
+</div>
+
+<div class="theme-info">
+  <span> 个人博客 </span>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共  字</span>
+  <div class="powered-by"></div>
+</div>
+
+<div class="theme-info">
+  <span> 正在建设 </span>
+</div>
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
