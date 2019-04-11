@@ -16,7 +16,7 @@
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -160,7 +160,7 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
@@ -171,7 +171,7 @@
     
   
 
-  <div class="container sidebar-position-right 
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right 
   page-home">
     <div class="headband"></div>
 
@@ -442,7 +442,7 @@
 
       
         
-          <p><em>just record in case of something</em></p>
+          <p>_just record in case of something_</p>
 <p><img src="http://ww1.sinaimg.cn/large/e1ac6bd5ly1fge1by549hj219p0qjwh3.jpg" alt></p>
           <!--noindex-->
           
@@ -635,7 +635,7 @@
 </blockquote>
 <h3 id="Why-Kernels"><a href="#Why-Kernels" class="headerlink" title="Why Kernels"></a>Why Kernels</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">K(x ,x&apos;) = z.z&apos; //The Kernel function</span><br><span class="line"></span><br><span class="line">z = function(x)</span><br><span class="line">z&apos; = function(x-)</span><br><span class="line"></span><br><span class="line">X = [x1,x2] //simple dataset</span><br><span class="line"></span><br><span class="line">// the kernel wants to be 2nd order polynomial</span><br><span class="line"></span><br><span class="line">Z = [1,x1,x2,x1^2,x2^2,x1x2]</span><br><span class="line"></span><br><span class="line">Z&apos; = [1,x1&apos;,x2&apos;,x1&apos;^2,x2&apos;^2,x1&apos;x2&apos;]</span><br><span class="line"></span><br><span class="line">K(x ,x&apos;) = Z.Z&apos; = 1+x1x1&apos;+ ... +x1x2x1&apos;x2&apos;</span><br><span class="line"></span><br><span class="line">K(x, x&apos;) = (1 + x1x1&apos; + ... + xnxn&apos;)^p // polynomial Kernel</span><br><span class="line"></span><br><span class="line">p: order of polynomial</span><br><span class="line">n: dimensions</span><br><span class="line"></span><br><span class="line">// Learn more about Exponential kernel for RBF</span><br></pre></td></tr></table></figure>
 <h3 id="Soft-Margin-SVM"><a href="#Soft-Margin-SVM" class="headerlink" title="Soft Margin SVM"></a>Soft Margin SVM</h3><blockquote>
-<p>google: svm kernel visualization overlapping –&gt; softmax polynomial kernel</p>
+<p>google: svm kernel visualization overlapping —&gt; softmax polynomial kernel</p>
 </blockquote>
 <h2 id="SVM-Parameters"><a href="#SVM-Parameters" class="headerlink" title="SVM Parameters"></a>SVM Parameters</h2><blockquote>
 <p>multi-classes</p>
@@ -817,8 +817,9 @@
 
       
         
-          <h1 id="Common-Sense-Republic"><a href="#Common-Sense-Republic" class="headerlink" title="Common Sense - Republic"></a>Common Sense - Republic</h1><h2 id="Julius-Caesar-Excerpts"><a href="#Julius-Caesar-Excerpts" class="headerlink" title="Julius Caesar Excerpts"></a>Julius Caesar Excerpts</h2><p><em>I have, when you have heard what I can say:／And know it now: the senate have concluded／To give this day a crown to mighty Caesar.／If you shall send them word you will not come,／Their minds may change. Besides, it were a mock／Apt to be render’d, for some one to say／’Break up the senate till another time,／When Caesar’s wife shall meet with better dreams.’／If Caesar hide himself, shall they not whisper／’Lo, Caesar is afraid’?／Pardon me, Caesar; for my dear dear love／To our proceeding bids me tell you this;／And reason to my love is liable.</em> —- from Shakespeare’s tragedy</p>
-<p><strong><julius caesar><br></julius></strong></p>
+          <h1 id="Common-Sense-Republic"><a href="#Common-Sense-Republic" class="headerlink" title="Common Sense - Republic"></a>Common Sense - Republic</h1><h2 id="Julius-Caesar-Excerpts"><a href="#Julius-Caesar-Excerpts" class="headerlink" title="Julius Caesar Excerpts"></a>Julius Caesar Excerpts</h2><p>_I have, when you have heard what I can say:／And know it now: the senate have concluded／To give this day a crown to mighty Caesar.／If you shall send them word you will not come,／Their minds may change. Besides, it were a mock／Apt to be render’d, for some one to say／’Break up the senate till another time,／When Caesar’s wife shall meet with better dreams.’／If Caesar hide himself, shall they not whisper／’Lo, Caesar is afraid’?／Pardon me, Caesar; for my dear dear love／To our proceeding bids me tell you this;／And reason to my love is liable._ —— from Shakespeare’s tragedy</p>
+<p><strong><julius caesar>
+</julius></strong></p>
 <h2 id="《朱利乌斯·凯撒》"><a href="#《朱利乌斯·凯撒》" class="headerlink" title="《朱利乌斯·凯撒》"></a>《朱利乌斯·凯撒》</h2><p>《凯撒大帝》（英语：The Tragedy of Julius Caesar，直译为《朱利叶斯·凯撒》）是莎士比亚的其中一出悲剧，通常被认定为是在1599年完成的。故事描述公元前44年一众罗马元老计划并成功刺杀独裁官朱利叶斯·凯撒，以及叛徒们在腓力比被击退的经过。莎士比亚有另外两出戏剧也是改编自古罗马历史，即《安东尼与克丽奥佩托拉》及《科利奥兰纳斯》，而《安东尼与克丽奥佩托拉》更可算是此剧的续集。 虽然戏剧的名字是《凯撒大帝》，但有观点认为剧中的主角是马尔卡斯·布鲁塔斯；凯撒只在三场戏中出现。此剧以布鲁图的内心挣扎为主题，描绘他怎样在友谊、国家及荣誉之间犹疑不定。</p>
           <!--noindex-->
           
@@ -1009,7 +1010,7 @@
 <li>python list : xs*ys means every element in xs times ys by the order of index</li>
 </ul>
 <h2 id="Matplotlib"><a href="#Matplotlib" class="headerlink" title="Matplotlib"></a>Matplotlib</h2><ul>
-<li><code>plt.scatter()</code> —&gt; scatter</li>
+<li><code>plt.scatter()</code> —-&gt; scatter</li>
 </ul>
           <!--noindex-->
           
@@ -1189,7 +1190,7 @@
 
       
         
-          <h1 id="Common-Sense-Kingdom"><a href="#Common-Sense-Kingdom" class="headerlink" title="Common Sense - Kingdom"></a>Common Sense - Kingdom</h1><h2 id="Leviathan-Excerpts"><a href="#Leviathan-Excerpts" class="headerlink" title="Leviathan Excerpts"></a>Leviathan Excerpts</h2><p>Nature, the art whereby God hath made and governs the world, is by the art of man, as in many other things, so in this also imitated, that it can make an artificial animal. For seeing life is but a motion of limbs, the beginning whereof is in some principal part within; why may we not say, that all automata (engines that move themselves by springs and wheels as doth a watch) have an artificial life? For what is the heart, but a spring; and the nerves, but so many strings; and the joints, but so many wheels, giving motion to the whole body, such as was intended by the artificer? Art goes yet further, imitating that rational and most excellent work of nature, man. For by art is created that great Leviathan called a Commonwealth,or State… “大自然”，也就是上帝用以创造和治理世界的艺术，也象在许多其他事物上一样，被人的艺术所模仿，从而能够制造出人造的动物。由于生命只是肢体的一种运动，它的起源在于内部的某些主要部分，那么我们为什么不能说，一切象钟表一样用发条和齿轮运行的”自动机械结构”也具有人造的生命呢？是否可以说它们的”心脏”无非就是”发条”、”神经”只是一些”游丝”，而”关节”不过是一些齿轮，这些零件如创造者所意图的那样，使整体得到活动的呢？艺术则更高明一些：它还要模仿有理性的”大自然”最精美的艺术品—-“人”。因为号称”国民的整体”或”国家”……</p>
+          <h1 id="Common-Sense-Kingdom"><a href="#Common-Sense-Kingdom" class="headerlink" title="Common Sense - Kingdom"></a>Common Sense - Kingdom</h1><h2 id="Leviathan-Excerpts"><a href="#Leviathan-Excerpts" class="headerlink" title="Leviathan Excerpts"></a>Leviathan Excerpts</h2><p>Nature, the art whereby God hath made and governs the world, is by the art of man, as in many other things, so in this also imitated, that it can make an artificial animal. For seeing life is but a motion of limbs, the beginning whereof is in some principal part within; why may we not say, that all automata (engines that move themselves by springs and wheels as doth a watch) have an artificial life? For what is the heart, but a spring; and the nerves, but so many strings; and the joints, but so many wheels, giving motion to the whole body, such as was intended by the artificer? Art goes yet further, imitating that rational and most excellent work of nature, man. For by art is created that great Leviathan called a Commonwealth,or State… “大自然”，也就是上帝用以创造和治理世界的艺术，也象在许多其他事物上一样，被人的艺术所模仿，从而能够制造出人造的动物。由于生命只是肢体的一种运动，它的起源在于内部的某些主要部分，那么我们为什么不能说，一切象钟表一样用发条和齿轮运行的”自动机械结构”也具有人造的生命呢？是否可以说它们的”心脏”无非就是”发条”、”神经”只是一些”游丝”，而”关节”不过是一些齿轮，这些零件如创造者所意图的那样，使整体得到活动的呢？艺术则更高明一些：它还要模仿有理性的”大自然”最精美的艺术品——“人”。因为号称”国民的整体”或”国家”……</p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1553,14 +1554,14 @@
 
       
         
-          <h1 id="Common-Sense-Empire"><a href="#Common-Sense-Empire" class="headerlink" title="Common Sense - Empire"></a>Common Sense - Empire</h1><h2 id="Common-Sense-Excerpts"><a href="#Common-Sense-Excerpts" class="headerlink" title="Common Sense Excerpts"></a><em>Common Sense Excerpts</em></h2><p>Society in every state is a blessing, but government even in its best state is but a necessary evil in its worst state an intolerable one; for when we suffer, or are exposed to the same miseries by a government, which we might expect in a country without government, our calamities is heightened by reflecting that we furnish the means by which we suffer! Government, like dress, is the badge of lost innocence; the palaces of kings are built on the ruins of the bowers of paradise. For were the impulses of conscience clear, uniform, and irresistibly obeyed, man would need no other lawgiver; but that not being the case, he finds it necessary to surrender up a part of his property to furnish means for the protection of the rest; and this he is induced to do by the same prudence which in every other case advises him out of two evils to choose the least. Wherefore, security being the true design and end of government, it unanswerably follows that whatever form thereof appears most likely to ensure it to us, with the least expense and greatest benefit, is preferable to all others.—-by <strong>Thomas Paine</strong></p>
-<h2 id="托马斯·潘恩"><a href="#托马斯·潘恩" class="headerlink" title="托马斯·潘恩"></a><em>托马斯·潘恩</em></h2><p>托马斯·潘恩（Thomas Paine）：英裔美国思想家、作家、政治活动家、理论家、革命家、激进民主主义者。生于英国诺福克郡，曾继承父业做过裁缝，后来做过教师、税务官员，后来投身欧美革命运动。1792年他被选入法国国民公会。1802年在杰斐逊总统的邀请下，潘恩返回美国。1809年6月8日在纽约格林尼治村林苑路59号去世，享年72岁。</p>
-<h2 id="Empire"><a href="#Empire" class="headerlink" title="Empire"></a><em>Empire</em></h2><h3 id="Concept-of-Empire"><a href="#Concept-of-Empire" class="headerlink" title="Concept of Empire"></a><em>Concept of Empire</em></h3><h4 id="Contrast-Concepts"><a href="#Contrast-Concepts" class="headerlink" title="Contrast Concepts"></a><em>Contrast Concepts</em></h4><ul>
-<li>geographic:a vast territory – city-state</li>
-<li>cultrial:multicultural – nation-state</li>
-<li>majesty:infinite – kingdom</li>
-<li>inherit:hereditary – republic</li>
-<li>power:superincumbent – federation</li>
+          <h1 id="Common-Sense-Empire"><a href="#Common-Sense-Empire" class="headerlink" title="Common Sense - Empire"></a>Common Sense - Empire</h1><h2 id="Common-Sense-Excerpts"><a href="#Common-Sense-Excerpts" class="headerlink" title="_Common Sense Excerpts_"></a>_Common Sense Excerpts_</h2><p>Society in every state is a blessing, but government even in its best state is but a necessary evil in its worst state an intolerable one; for when we suffer, or are exposed to the same miseries by a government, which we might expect in a country without government, our calamities is heightened by reflecting that we furnish the means by which we suffer! Government, like dress, is the badge of lost innocence; the palaces of kings are built on the ruins of the bowers of paradise. For were the impulses of conscience clear, uniform, and irresistibly obeyed, man would need no other lawgiver; but that not being the case, he finds it necessary to surrender up a part of his property to furnish means for the protection of the rest; and this he is induced to do by the same prudence which in every other case advises him out of two evils to choose the least. Wherefore, security being the true design and end of government, it unanswerably follows that whatever form thereof appears most likely to ensure it to us, with the least expense and greatest benefit, is preferable to all others.——by <strong>Thomas Paine</strong></p>
+<h2 id="托马斯·潘恩"><a href="#托马斯·潘恩" class="headerlink" title="_托马斯·潘恩_"></a>_托马斯·潘恩_</h2><p>托马斯·潘恩（Thomas Paine）：英裔美国思想家、作家、政治活动家、理论家、革命家、激进民主主义者。生于英国诺福克郡，曾继承父业做过裁缝，后来做过教师、税务官员，后来投身欧美革命运动。1792年他被选入法国国民公会。1802年在杰斐逊总统的邀请下，潘恩返回美国。1809年6月8日在纽约格林尼治村林苑路59号去世，享年72岁。</p>
+<h2 id="Empire"><a href="#Empire" class="headerlink" title="_Empire_"></a>_Empire_</h2><h3 id="Concept-of-Empire"><a href="#Concept-of-Empire" class="headerlink" title="_Concept of Empire_"></a>_Concept of Empire_</h3><h4 id="Contrast-Concepts"><a href="#Contrast-Concepts" class="headerlink" title="_Contrast Concepts_"></a>_Contrast Concepts_</h4><ul>
+<li>geographic:a vast territory — city-state</li>
+<li>cultrial:multicultural — nation-state</li>
+<li>majesty:infinite — kingdom</li>
+<li>inherit:hereditary — republic</li>
+<li>power:superincumbent — federation</li>
 </ul>
           <!--noindex-->
           
@@ -1922,7 +1923,7 @@
 
       
         
-          <h1 id="Game-Prediction-System-Part-2"><a href="#Game-Prediction-System-Part-2" class="headerlink" title="Game Prediction System Part 2"></a><strong>Game Prediction System Part 2</strong></h1><h2 id="Data-Retrieving"><a href="#Data-Retrieving" class="headerlink" title="Data Retrieving"></a><strong>Data Retrieving</strong></h2><h3 id="Data-Source-and-version-control"><a href="#Data-Source-and-version-control" class="headerlink" title="Data Source and version control"></a><em>Data Source and version control</em></h3><ul>
+          <h1 id="Game-Prediction-System-Part-2"><a href="#Game-Prediction-System-Part-2" class="headerlink" title="Game Prediction System Part 2"></a><strong>Game Prediction System Part 2</strong></h1><h2 id="Data-Retrieving"><a href="#Data-Retrieving" class="headerlink" title="Data Retrieving"></a><strong>Data Retrieving</strong></h2><h3 id="Data-Source-and-version-control"><a href="#Data-Source-and-version-control" class="headerlink" title="_Data Source and version control_"></a>_Data Source and version control_</h3><ul>
 <li><a href="http://www.wanplus.com/lol" title="WAN PLUS" target="_blank" rel="noopener">Data Source</a></li>
 <li><a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" title="BeautifulSoup4" target="_blank" rel="noopener">BeautifulSoup4</a></li>
 <li><a href="https://www.python.org/downloads/" title="python 3.5.2" target="_blank" rel="noopener">Python35</a></li>
@@ -2113,7 +2114,7 @@
 
       
         
-          <h1 id="Game-Prediction-System-Part-1"><a href="#Game-Prediction-System-Part-1" class="headerlink" title="Game Prediction System Part 1"></a><strong>Game Prediction System Part 1</strong></h1><h2 id="Data-Retrieving"><a href="#Data-Retrieving" class="headerlink" title="Data Retrieving"></a><strong>Data Retrieving</strong></h2><h3 id="Data-Source-and-version-control"><a href="#Data-Source-and-version-control" class="headerlink" title="Data Source and version control"></a><em>Data Source and version control</em></h3><ul>
+          <h1 id="Game-Prediction-System-Part-1"><a href="#Game-Prediction-System-Part-1" class="headerlink" title="Game Prediction System Part 1"></a><strong>Game Prediction System Part 1</strong></h1><h2 id="Data-Retrieving"><a href="#Data-Retrieving" class="headerlink" title="Data Retrieving"></a><strong>Data Retrieving</strong></h2><h3 id="Data-Source-and-version-control"><a href="#Data-Source-and-version-control" class="headerlink" title="_Data Source and version control_"></a>_Data Source and version control_</h3><ul>
 <li><a href="http://www.wanplus.com/lol" title="WAN PLUS" target="_blank" rel="noopener">Data Source</a></li>
 <li><a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" title="BeautifulSoup4" target="_blank" rel="noopener">BeautifulSoup4</a></li>
 <li><a href="https://www.python.org/downloads/" title="python 3.5.2" target="_blank" rel="noopener">Python35</a></li>
@@ -2574,7 +2575,24 @@
   
 
 
-  <script src="/js/next-boot.js?v=7.1.0"></script>
+  <script src="/js/next-boot.js?v=7.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
   

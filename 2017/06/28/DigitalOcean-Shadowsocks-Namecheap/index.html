@@ -16,7 +16,7 @@
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -167,7 +167,7 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
@@ -178,7 +178,7 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -453,7 +453,8 @@
 <h2 id="使用-GitHub-学生包注册使用优惠"><a href="#使用-GitHub-学生包注册使用优惠" class="headerlink" title="使用 GitHub 学生包注册使用优惠"></a>使用 GitHub 学生包注册使用优惠</h2><p>当登录好了之后，先不用着急创建 droplet，先去使用 GitHub 的优惠代码，获取网址为 <a href="https://education.github.com/pack/offers" target="_blank" rel="noopener">Github - Student pack</a> 在 GitHub 网站上绑定一个 edu 后缀的邮箱就可以使用了，然后找到 DO 的优惠选项，获取优惠代码。</p>
 <p><img src="http://ww1.sinaimg.cn/large/e1ac6bd5ly1fh0wqyzqraj21gs0cater.jpg" alt></p>
 <p>回到 DO 的界面，点击头像，进入 setting，在左侧的选项当中，找到 billing，在 Promo code 这个选项框当中输入优惠代码，认证通过之后恭喜你就有了 50 刀的 GitHub 优惠了，加上之前充值的 5 美元，现在总共是 55 美元，可以使用最低账户 11 个月，11 个月之后在另谋出路。</p>
-<h2 id="创建-Droplet"><a href="#创建-Droplet" class="headerlink" title="创建 Droplet"></a>创建 Droplet</h2><table>
+<h2 id="创建-Droplet"><a href="#创建-Droplet" class="headerlink" title="创建 Droplet"></a>创建 Droplet</h2><div class="table-container">
+<table>
 <thead>
 <tr>
 <th style="text-align:center">配置选项</th>
@@ -479,6 +480,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>注意 SSH key 我认为只要熟悉 GitHub 基本操作的同学应该都知道如何产生并绑定，最好使用已经绑定在 GitHub 上的主机的 SSH key 也就是你的主要电脑，这样以后操作起来会方便一点，如果实在没有经验，可以参考 <a href="https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets" target="_blank" rel="noopener">DO SSH key</a> 中的说明</p>
 <h2 id="安装-shadowsocks"><a href="#安装-shadowsocks" class="headerlink" title="安装 shadowsocks"></a>安装 shadowsocks</h2><p>SSH 远程登录主机进行配置：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@ip_address</span><br></pre></td></tr></table></figure></p>
 <p>安装 shadowsocks：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get install python-pip</span><br><span class="line">pip install shadowsocks</span><br></pre></td></tr></table></figure></p>
@@ -987,7 +989,24 @@
   
 
 
-  <script src="/js/next-boot.js?v=7.1.0"></script>
+  <script src="/js/next-boot.js?v=7.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
   

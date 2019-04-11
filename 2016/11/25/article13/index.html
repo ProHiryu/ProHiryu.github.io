@@ -16,7 +16,7 @@
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="Game Prediction System Part 2Data RetrievingData Source and version control Data Source BeautifulSoup4 Python35 selenium geckodriver DB browser   crawler with Urllib and BS4 Something just be differen">
-<meta name="keywords" content="python,machine learning,databases,beautifulsoup,sqlite">
+  <meta name="description" content="Game Prediction System Part 2Data Retrieving_Data Source and version control_ Data Source BeautifulSoup4 Python35 selenium geckodriver DB browser   crawler with Urllib and BS4 Something just be differ">
+<meta name="keywords" content="python,machine learning,beautifulsoup,sqlite,databases">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Game Prediction System Part 2">
 <meta property="og:url" content="https://prohiryu.github.io/2016/11/25/article13/index.html">
 <meta property="og:site_name" content="Sic transit gloria mundi">
-<meta property="og:description" content="Game Prediction System Part 2Data RetrievingData Source and version control Data Source BeautifulSoup4 Python35 selenium geckodriver DB browser   crawler with Urllib and BS4 Something just be differen">
+<meta property="og:description" content="Game Prediction System Part 2Data Retrieving_Data Source and version control_ Data Source BeautifulSoup4 Python35 selenium geckodriver DB browser   crawler with Urllib and BS4 Something just be differ">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-05-05T07:19:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Game Prediction System Part 2">
-<meta name="twitter:description" content="Game Prediction System Part 2Data RetrievingData Source and version control Data Source BeautifulSoup4 Python35 selenium geckodriver DB browser   crawler with Urllib and BS4 Something just be differen">
+<meta name="twitter:description" content="Game Prediction System Part 2Data Retrieving_Data Source and version control_ Data Source BeautifulSoup4 Python35 selenium geckodriver DB browser   crawler with Urllib and BS4 Something just be differ">
 
 
 
@@ -162,7 +162,7 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
@@ -173,7 +173,7 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -440,7 +440,7 @@
       
 
       
-        <h1 id="Game-Prediction-System-Part-2"><a href="#Game-Prediction-System-Part-2" class="headerlink" title="Game Prediction System Part 2"></a><strong>Game Prediction System Part 2</strong></h1><h2 id="Data-Retrieving"><a href="#Data-Retrieving" class="headerlink" title="Data Retrieving"></a><strong>Data Retrieving</strong></h2><h3 id="Data-Source-and-version-control"><a href="#Data-Source-and-version-control" class="headerlink" title="Data Source and version control"></a><em>Data Source and version control</em></h3><ul>
+        <h1 id="Game-Prediction-System-Part-2"><a href="#Game-Prediction-System-Part-2" class="headerlink" title="Game Prediction System Part 2"></a><strong>Game Prediction System Part 2</strong></h1><h2 id="Data-Retrieving"><a href="#Data-Retrieving" class="headerlink" title="Data Retrieving"></a><strong>Data Retrieving</strong></h2><h3 id="Data-Source-and-version-control"><a href="#Data-Source-and-version-control" class="headerlink" title="_Data Source and version control_"></a>_Data Source and version control_</h3><ul>
 <li><a href="http://www.wanplus.com/lol" title="WAN PLUS" target="_blank" rel="noopener">Data Source</a></li>
 <li><a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" title="BeautifulSoup4" target="_blank" rel="noopener">BeautifulSoup4</a></li>
 <li><a href="https://www.python.org/downloads/" title="python 3.5.2" target="_blank" rel="noopener">Python35</a></li>
@@ -456,19 +456,19 @@
 <a id="more"></a>
 <h5 id="Code1"><a href="#Code1" class="headerlink" title="Code1:"></a>Code1:</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># games_order = dict()</span></span><br><span class="line"><span class="comment"># games_order['IEM_Oakland_2016'] = 311</span></span><br><span class="line"><span class="comment"># games_order['NEST_2016'] = 298</span></span><br><span class="line"><span class="comment"># games_order['KeSPA_2016'] = 303</span></span><br><span class="line"><span class="comment"># games_order['S_2016'] = 177</span></span><br><span class="line"><span class="comment"># games_order['LPL_Regional_Qualifier_2016'] = 250</span></span><br><span class="line"><span class="comment"># games_order['Demacia_2016'] = 230</span></span><br><span class="line"><span class="comment"># games_order['LMS_Summer_2016'] = 221</span></span><br><span class="line"><span class="comment"># games_order['LCS_NA_Summer_2016'] = 217</span></span><br><span class="line"><span class="comment"># games_order['LCS_EU_Summer_2016'] = 216</span></span><br><span class="line"><span class="comment"># games_order['LPL_Summer_2016'] = 218</span></span><br><span class="line"><span class="comment"># games_order['LCK_Summer_2016'] = 215</span></span><br><span class="line"><span class="comment"># games_order['MSI_2016'] = 178</span></span><br><span class="line"><span class="comment"># games_order['IEM_Katowice_2016'] = 176</span></span><br><span class="line"><span class="comment"># games_order['LMS_Spring_2016'] = 173</span></span><br><span class="line"><span class="comment"># games_order['LCS_NA_Spring_2016'] = 169</span></span><br><span class="line"><span class="comment"># games_order['LCS_EU_Spring_2016'] = 170</span></span><br><span class="line"><span class="comment"># games_order['LPL_Spring_2016'] = 165</span></span><br><span class="line"><span class="comment"># games_order['LCK_Spring_2016'] = 172</span></span><br><span class="line"><span class="comment"># games_order['IEM_Cologne_2015'] = 164</span></span><br><span class="line"><span class="comment"># games_order['NEST_2015'] = 154</span></span><br><span class="line"><span class="comment"># games_order['Demacia_2015'] = 158</span></span><br><span class="line"><span class="comment"># games_order['IEM_San_Jose_2015'] = 152</span></span><br><span class="line"><span class="comment"># games_order['KeSPA_2015'] = 157</span></span><br><span class="line"><span class="comment"># games_order['S_2015'] = 136</span></span><br><span class="line"><span class="comment"># ......</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li><em>these are some orders that i have found before..</em></li>
+<li>_these are some orders that i have found before.._</li>
 </ul>
 <h5 id="Code2"><a href="#Code2" class="headerlink" title="Code2"></a>Code2</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">conn = sqlite3.connect(<span class="string">'lol.sqlite'</span>)</span><br><span class="line">cur = conn.cursor()</span><br><span class="line">cur.executescript(<span class="string">'''</span></span><br><span class="line"><span class="string">DROP TABLE IF EXISTS Games ;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">CREATE TABLE Games (</span></span><br><span class="line"><span class="string">id       INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,</span></span><br><span class="line"><span class="string">duration TEXT,</span></span><br><span class="line"><span class="string">series   TEXT,</span></span><br><span class="line"><span class="string">team1    TEXT,</span></span><br><span class="line"><span class="string">team2    TEXT,</span></span><br><span class="line"><span class="string">result1  INTEGER,</span></span><br><span class="line"><span class="string">result2  INTEGER,</span></span><br><span class="line"><span class="string">bo       INTEGER</span></span><br><span class="line"><span class="string">);</span></span><br><span class="line"><span class="string">'''</span>)</span><br></pre></td></tr></table></figure>
 <ul>
-<li><em>use sql to create the table</em></li>
+<li>_use sql to create the table_</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">    url = base_url + str(i+<span class="number">1</span>)</span><br><span class="line">    html = urllib.request.urlopen(url)</span><br><span class="line">    soup = BeautifulSoup(html,<span class="string">'html.parser'</span>)</span><br><span class="line">    links = soup.findAll(<span class="string">'div'</span>,class_ = <span class="string">'text_t'</span>)</span><br><span class="line">    <span class="keyword">for</span> link <span class="keyword">in</span> links:</span><br><span class="line">        <span class="keyword">print</span> (link.find(<span class="string">'a'</span>).get(<span class="string">'href'</span>))</span><br><span class="line">        <span class="comment"># num = re.findall('[0-9]+',link.find('a').get('href'))</span></span><br><span class="line">        new_urls.append(<span class="string">'http://www.wanplus.com'</span> + link.find(<span class="string">'a'</span>).get(<span class="string">'href'</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (new_urls)</span><br></pre></td></tr></table></figure>
 <ul>
-<li><em>in this code segment,i use bs4 to find every order in the tag a’s attribute href’s text,at the first time i want to use REGEX to find the numbers,and then i found that the text is the url’s portion,just use it</em></li>
+<li>_in this code segment,i use bs4 to find every order in the tag a’s attribute href’s text,at the first time i want to use REGEX to find the numbers,and then i found that the text is the url’s portion,just use it_</li>
 </ul>
 <h5 id="Code3"><a href="#Code3" class="headerlink" title="Code3"></a>Code3</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> url <span class="keyword">in</span> new_urls:</span><br><span class="line">    html = urllib.request.urlopen(url)</span><br><span class="line">    soup = BeautifulSoup(html,<span class="string">'html.parser'</span>)</span><br><span class="line">    title = soup.find(<span class="string">'div'</span>,class_ = <span class="string">'caption-outer'</span>)</span><br><span class="line">    duration = soup.find(<span class="string">'div'</span>,class_ = <span class="string">'caption-outer'</span>).find(<span class="string">'span'</span>).text</span><br><span class="line">    str = title.contents[<span class="number">1</span>].text</span><br><span class="line">    <span class="keyword">if</span> str[<span class="number">0</span>] == <span class="string">' '</span>:</span><br><span class="line">        str = str[<span class="number">1</span>:]</span><br><span class="line">    <span class="keyword">print</span> (str)</span><br><span class="line">    bo = <span class="number">0</span></span><br><span class="line">    games = soup.findAll(<span class="string">'div'</span>,class_ = <span class="string">'match-team'</span>)</span><br><span class="line">    <span class="keyword">for</span> game <span class="keyword">in</span> games:</span><br><span class="line">        team = game.findAll(<span class="string">'span'</span>,class_ = <span class="string">'team-name'</span>)</span><br><span class="line">        result = game.find(<span class="string">'em'</span>,class_ = <span class="string">'team-vs'</span>).findAll(<span class="string">'i'</span>)</span><br><span class="line">        team_name = [i.text <span class="keyword">for</span> i <span class="keyword">in</span> team]</span><br><span class="line">        game_result = [int(i.text) <span class="keyword">for</span> i <span class="keyword">in</span> result]</span><br><span class="line">        <span class="keyword">if</span> max(game_result) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">if</span> sum(game_result) == <span class="number">1</span>:</span><br><span class="line">                bo = <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> sum(game_result) == <span class="number">2</span>:</span><br><span class="line">                bo = <span class="number">2</span></span><br><span class="line">        <span class="keyword">elif</span> max(game_result) == <span class="number">2</span>:</span><br><span class="line">            bo = <span class="number">3</span></span><br><span class="line">        <span class="keyword">elif</span> max(game_result) == <span class="number">3</span>:</span><br><span class="line">            bo = <span class="number">5</span></span><br><span class="line">        cur.execute(<span class="string">'''INSERT OR IGNORE INTO Games (series, duration, team1, team2, result1,</span></span><br><span class="line"><span class="string">                       result2, bo) VALUES ( ?, ?, ?, ?, ?, ?, ? )'''</span>,( str, duration, team_name[<span class="number">0</span>], team_name[<span class="number">1</span>],</span><br><span class="line">                                                                    game_result[<span class="number">0</span>], game_result[<span class="number">1</span>], bo ))</span><br><span class="line">        <span class="keyword">print</span> (bo)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">conn.commit()</span><br></pre></td></tr></table></figure>
 <ul>
-<li><em>find ‘match-team’,’team-name’,’team-vs’,we can get the team information and game information includes duration and series name,so that we can put them into our database ‘lol’</em></li>
+<li>_find ‘match-team’,’team-name’,’team-vs’,we can get the team information and game information includes duration and series name,so that we can put them into our database ‘lol’_</li>
 <li><p>There are also some tips and notes:</p>
 <ul>
 <li>use class name in bs4 should be like this <code>title = soup.find(&#39;div&#39;,class_ = &#39;caption-outer&#39;)</code>,other usages you should read the <a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" title="BeautifulSoup4" target="_blank" rel="noopener">documentations</a></li>
@@ -480,7 +480,7 @@
 </li>
 <li><p>That’s all we get the game informations, in the next part we may be start our machine learning portion,very excited!</p>
 </li>
-<li><em>See you</em></li>
+<li>_See you_</li>
 </ul>
 
       
@@ -509,11 +509,11 @@
           
             <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
           
-            <a href="/tags/databases/" rel="tag"># databases</a>
-          
             <a href="/tags/beautifulsoup/" rel="tag"># beautifulsoup</a>
           
             <a href="/tags/sqlite/" rel="tag"># sqlite</a>
+          
+            <a href="/tags/databases/" rel="tag"># databases</a>
           
         </div>
       
@@ -841,7 +841,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Game-Prediction-System-Part-2"><span class="nav-number">1.</span> <span class="nav-text">Game Prediction System Part 2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-Retrieving"><span class="nav-number">1.1.</span> <span class="nav-text">Data Retrieving</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Source-and-version-control"><span class="nav-number">1.1.1.</span> <span class="nav-text">Data Source and version control</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#crawler-with-Urllib-and-BS4"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">crawler with Urllib and BS4</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Code1"><span class="nav-number">1.1.1.1.1.</span> <span class="nav-text">Code1:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Code2"><span class="nav-number">1.1.1.1.2.</span> <span class="nav-text">Code2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Code3"><span class="nav-number">1.1.1.1.3.</span> <span class="nav-text">Code3</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Game-Prediction-System-Part-2"><span class="nav-number">1.</span> <span class="nav-text">Game Prediction System Part 2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-Retrieving"><span class="nav-number">1.1.</span> <span class="nav-text">Data Retrieving</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Source-and-version-control"><span class="nav-number">1.1.1.</span> <span class="nav-text">_Data Source and version control_</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#crawler-with-Urllib-and-BS4"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">crawler with Urllib and BS4</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Code1"><span class="nav-number">1.1.1.1.1.</span> <span class="nav-text">Code1:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Code2"><span class="nav-number">1.1.1.1.2.</span> <span class="nav-text">Code2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Code3"><span class="nav-number">1.1.1.1.3.</span> <span class="nav-text">Code3</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -980,7 +980,24 @@
   
 
 
-  <script src="/js/next-boot.js?v=7.1.0"></script>
+  <script src="/js/next-boot.js?v=7.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
   

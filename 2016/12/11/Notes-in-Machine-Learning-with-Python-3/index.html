@@ -16,7 +16,7 @@
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -162,7 +162,7 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
@@ -173,7 +173,7 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -452,7 +452,7 @@
 </blockquote>
 <h3 id="Why-Kernels"><a href="#Why-Kernels" class="headerlink" title="Why Kernels"></a>Why Kernels</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">K(x ,x&apos;) = z.z&apos; //The Kernel function</span><br><span class="line"></span><br><span class="line">z = function(x)</span><br><span class="line">z&apos; = function(x-)</span><br><span class="line"></span><br><span class="line">X = [x1,x2] //simple dataset</span><br><span class="line"></span><br><span class="line">// the kernel wants to be 2nd order polynomial</span><br><span class="line"></span><br><span class="line">Z = [1,x1,x2,x1^2,x2^2,x1x2]</span><br><span class="line"></span><br><span class="line">Z&apos; = [1,x1&apos;,x2&apos;,x1&apos;^2,x2&apos;^2,x1&apos;x2&apos;]</span><br><span class="line"></span><br><span class="line">K(x ,x&apos;) = Z.Z&apos; = 1+x1x1&apos;+ ... +x1x2x1&apos;x2&apos;</span><br><span class="line"></span><br><span class="line">K(x, x&apos;) = (1 + x1x1&apos; + ... + xnxn&apos;)^p // polynomial Kernel</span><br><span class="line"></span><br><span class="line">p: order of polynomial</span><br><span class="line">n: dimensions</span><br><span class="line"></span><br><span class="line">// Learn more about Exponential kernel for RBF</span><br></pre></td></tr></table></figure>
 <h3 id="Soft-Margin-SVM"><a href="#Soft-Margin-SVM" class="headerlink" title="Soft Margin SVM"></a>Soft Margin SVM</h3><blockquote>
-<p>google: svm kernel visualization overlapping –&gt; softmax polynomial kernel</p>
+<p>google: svm kernel visualization overlapping —&gt; softmax polynomial kernel</p>
 </blockquote>
 <h2 id="SVM-Parameters"><a href="#SVM-Parameters" class="headerlink" title="SVM Parameters"></a>SVM Parameters</h2><blockquote>
 <p>multi-classes</p>
@@ -957,7 +957,24 @@
   
 
 
-  <script src="/js/next-boot.js?v=7.1.0"></script>
+  <script src="/js/next-boot.js?v=7.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
   

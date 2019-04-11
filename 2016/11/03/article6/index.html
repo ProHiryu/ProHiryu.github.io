@@ -16,7 +16,7 @@
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -168,7 +168,7 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
@@ -179,7 +179,7 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -482,7 +482,7 @@ home-grown or custom-built applications：相对来说难一点，但不是不�
 <ul>
 <li>Database：Oracle, MySQL, Microsoft SQL   （need DBA）</li>
 <li>Flat Text File：slower  but much easier to access</li>
-<li>Binary File：——</li>
+<li>Binary File：———</li>
 </ul>
 <p><strong>Monitoring：</strong><br>one word：interface</p>
 <p><strong>Summary</strong><br>A SIEM is composed of many parts, each doing a separate job. Remember, each of these systems can run independently of the others, but without them all running in unison, you will not have an effective SIEM. Depending on the system you are using, there may be more pieces added to that specific SIEM, but each SIEM will always have the basic underlying systems as described in this chapter. By understanding each part of the SIEM, what each piece does and how it works, you will be able to manage your SIEM effectively and troubleshoot issues as they arise.</p>
@@ -952,7 +952,24 @@ home-grown or custom-built applications：相对来说难一点，但不是不�
   
 
 
-  <script src="/js/next-boot.js?v=7.1.0"></script>
+  <script src="/js/next-boot.js?v=7.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
   

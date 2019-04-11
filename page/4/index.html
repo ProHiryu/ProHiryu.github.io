@@ -16,7 +16,7 @@
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -160,7 +160,7 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
@@ -171,7 +171,7 @@
     
   
 
-  <div class="container sidebar-position-right 
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right 
   page-home">
     <div class="headband"></div>
 
@@ -619,7 +619,7 @@
 
       
         
-          <p>错误信息：remote: Permission to ProHiryu/Coursera-test.git denied to forever-cactus.<br>fatal: unable to access ‘<a href="https://git@github.com/ProHiryu/Coursera-test.git/&#39;" target="_blank" rel="noopener">https://git@github.com/ProHiryu/Coursera-test.git/&#39;</a>: The requested URL returned error: 403</p>
+          <p>错误信息：remote: Permission to ProHiryu/Coursera-test.git denied to forever-cactus.<br>fatal: unable to access ‘<a href="https://git@github.com/ProHiryu/Coursera-test.git/" target="_blank" rel="noopener">https://git@github.com/ProHiryu/Coursera-test.git/</a>‘: The requested URL returned error: 403</p>
 <p>其中ProHiryu是我的用户名。</p>
 <p>在网上查了很久，大多就是吧Github上面的英文翻译了一下，我折腾了一下午，都快要放弃了，在一个英文网站上看到了一个正确回答，就搞定了。</p>
 <p>首先这篇文章的前提是，你已经在Windows上正确配置了Git，这个网上有大把教程可以查。</p>
@@ -986,6 +986,7 @@
 <li>真阴性（TN）：诊断为没有，实际上也没有高血压。</li>
 <li>伪阴性（FN）：诊断为没有，实际却有高血压。</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -1007,6 +1008,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>以上定义来自 wiki，从表中可以很清晰地看出对应的关系，注意 TP 等概念指的是对应的项目个数，同样的，这里并不涉及到各种检测率的概念，只是单纯的程序是否判断正确的个数统计。注意，涉及到多类问题的时候，应该将每一类分开计算，其余类别均属于错误范围内。</p>
           <!--noindex-->
           
@@ -1917,7 +1919,7 @@
       
         
           
-            <p>在网上查了很多资料大多都是瞎扯，事实上文档当中写了，应该用以下语句<br>mysqld  –initialize 先初始化data目录<br>然后就可以启动了</p>
+            <p>在网上查了很多资料大多都是瞎扯，事实上文档当中写了，应该用以下语句<br>mysqld  —initialize 先初始化data目录<br>然后就可以启动了</p>
 
           
         
@@ -2537,7 +2539,24 @@
   
 
 
-  <script src="/js/next-boot.js?v=7.1.0"></script>
+  <script src="/js/next-boot.js?v=7.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
   

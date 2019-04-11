@@ -16,7 +16,7 @@
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -96,13 +96,13 @@
 
 
 
-  <meta name="description" content="本文针对 ROC 曲线相关的各种概念进行基本阐述，以供日后查阅  基本概念二元分类模型的个案预测有四种结局：  真阳性（TP）：诊断为有，实际上也有高血压。 伪阳性（FP）：诊断为有，实际却没有高血压。 真阴性（TN）：诊断为没有，实际上也没有高血压。 伪阴性（FN）：诊断为没有，实际却有高血压。     Confusion matrix 实际为 True 实际为 False         检">
+  <meta name="description" content="本文针对 ROC 曲线相关的各种概念进行基本阐述，以供日后查阅  基本概念二元分类模型的个案预测有四种结局：  真阳性（TP）：诊断为有，实际上也有高血压。 伪阳性（FP）：诊断为有，实际却没有高血压。 真阴性（TN）：诊断为没有，实际上也没有高血压。 伪阴性（FN）：诊断为没有，实际却有高血压。      Confusion matrix 实际为 True 实际为 False">
 <meta name="keywords" content="machine learning,SIEM,classifier">
 <meta property="og:type" content="article">
 <meta property="og:title" content="false positive 与 false negative">
 <meta property="og:url" content="https://prohiryu.github.io/2016/11/03/article8/index.html">
 <meta property="og:site_name" content="Sic transit gloria mundi">
-<meta property="og:description" content="本文针对 ROC 曲线相关的各种概念进行基本阐述，以供日后查阅  基本概念二元分类模型的个案预测有四种结局：  真阳性（TP）：诊断为有，实际上也有高血压。 伪阳性（FP）：诊断为有，实际却没有高血压。 真阴性（TN）：诊断为没有，实际上也没有高血压。 伪阴性（FN）：诊断为没有，实际却有高血压。     Confusion matrix 实际为 True 实际为 False         检">
+<meta property="og:description" content="本文针对 ROC 曲线相关的各种概念进行基本阐述，以供日后查阅  基本概念二元分类模型的个案预测有四种结局：  真阳性（TP）：诊断为有，实际上也有高血压。 伪阳性（FP）：诊断为有，实际却没有高血压。 真阴性（TN）：诊断为没有，实际上也没有高血压。 伪阴性（FN）：诊断为没有，实际却有高血压。      Confusion matrix 实际为 True 实际为 False">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5ly1fg4necf724j20ud0ueglr.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5ly1fg4nnrs5vxj20a10gbq2w.jpg">
@@ -110,7 +110,7 @@
 <meta property="og:updated_time" content="2017-05-31T10:13:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="false positive 与 false negative">
-<meta name="twitter:description" content="本文针对 ROC 曲线相关的各种概念进行基本阐述，以供日后查阅  基本概念二元分类模型的个案预测有四种结局：  真阳性（TP）：诊断为有，实际上也有高血压。 伪阳性（FP）：诊断为有，实际却没有高血压。 真阴性（TN）：诊断为没有，实际上也没有高血压。 伪阴性（FN）：诊断为没有，实际却有高血压。     Confusion matrix 实际为 True 实际为 False         检">
+<meta name="twitter:description" content="本文针对 ROC 曲线相关的各种概念进行基本阐述，以供日后查阅  基本概念二元分类模型的个案预测有四种结局：  真阳性（TP）：诊断为有，实际上也有高血压。 伪阳性（FP）：诊断为有，实际却没有高血压。 真阴性（TN）：诊断为没有，实际上也没有高血压。 伪阴性（FN）：诊断为没有，实际却有高血压。      Confusion matrix 实际为 True 实际为 False">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e1ac6bd5ly1fg4necf724j20ud0ueglr.jpg">
 
 
@@ -166,7 +166,7 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
@@ -177,7 +177,7 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -454,6 +454,7 @@
 <li>真阴性（TN）：诊断为没有，实际上也没有高血压。</li>
 <li>伪阴性（FN）：诊断为没有，实际却有高血压。</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -475,6 +476,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>以上定义来自 wiki，从表中可以很清晰地看出对应的关系，注意 TP 等概念指的是对应的项目个数，同样的，这里并不涉及到各种检测率的概念，只是单纯的程序是否判断正确的个数统计。注意，涉及到多类问题的时候，应该将每一类分开计算，其余类别均属于错误范围内。</p>
 <a id="more"></a>
 <h1 id="ROC-区间"><a href="#ROC-区间" class="headerlink" title="ROC 区间"></a>ROC 区间</h1><p>如图： <img src="http://ww1.sinaimg.cn/large/e1ac6bd5ly1fg4necf724j20ud0ueglr.jpg" alt></p>
@@ -993,7 +995,24 @@
   
 
 
-  <script src="/js/next-boot.js?v=7.1.0"></script>
+  <script src="/js/next-boot.js?v=7.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
   

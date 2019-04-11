@@ -16,7 +16,7 @@
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -160,7 +160,7 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
@@ -171,7 +171,7 @@
     
   
 
-  <div class="container sidebar-position-right 
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right 
   page-home">
     <div class="headband"></div>
 
@@ -444,7 +444,7 @@
         
           <p><strong>PHP3:</strong><br>source当中的SQL部分如下：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>($_POST[user] &amp;&amp; $_POST[pass]) &#123;</span><br><span class="line">  mysql_connect(<span class="string">"localhost"</span>,<span class="string">"php3"</span>,<span class="string">"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span>);</span><br><span class="line">  mysql_select_db(<span class="string">"php3"</span>);</span><br><span class="line"></span><br><span class="line">  $user = $_POST[user];</span><br><span class="line">  $pass = md5($_POST[pass], <span class="keyword">True</span>);</span><br><span class="line">  $query = @mysql_fetch_array(mysql_query(<span class="string">"select user from php3 where (user='$user') and (pw='$pass')"</span>));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>($query[user]==<span class="string">"admin"</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;p&gt;Logged in! Key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx &lt;/p&gt;"</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>($query[user] != <span class="string">"admin"</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span>(<span class="string">"&lt;p&gt;You are not admin!&lt;/p&gt;"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>直接通过注入绕过即可<br>usr: ‘) UNION select user from php3 where (user=’admin’) –<br>pass: anypass</p>
+<p>直接通过注入绕过即可<br>usr: ‘) UNION select user from php3 where (user=’admin’) —<br>pass: anypass</p>
 <p>key: 8ab9b92c174dd483ad17cee1bb0c5bdb</p>
           <!--noindex-->
           
@@ -892,7 +892,24 @@
   
 
 
-  <script src="/js/next-boot.js?v=7.1.0"></script>
+  <script src="/js/next-boot.js?v=7.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
   

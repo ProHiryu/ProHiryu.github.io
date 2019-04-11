@@ -16,7 +16,7 @@
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -166,7 +166,7 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
@@ -177,7 +177,7 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -461,7 +461,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Dropout, Flatten</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Conv2D, MaxPooling2D</span><br><span class="line"><span class="keyword">from</span> keras.optimizers <span class="keyword">import</span> SGD</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate dummy data</span></span><br><span class="line">x_train = np.random.random((<span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>, <span class="number">3</span>))</span><br><span class="line">y_train = keras.utils.to_categorical(np.random.randint(<span class="number">10</span>, size=(<span class="number">100</span>, <span class="number">1</span>)), num_classes=<span class="number">10</span>)</span><br><span class="line">x_test = np.random.random((<span class="number">20</span>, <span class="number">100</span>, <span class="number">100</span>, <span class="number">3</span>))</span><br><span class="line">y_test = keras.utils.to_categorical(np.random.randint(<span class="number">10</span>, size=(<span class="number">20</span>, <span class="number">1</span>)), num_classes=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">model = Sequential()</span><br><span class="line"><span class="comment"># input: 100x100 images with 3 channels -&gt; (100, 100, 3) tensors.</span></span><br><span class="line"><span class="comment"># this applies 32 convolution filters of size 3x3 each.</span></span><br><span class="line">model.add(Conv2D(<span class="number">32</span>, (<span class="number">3</span>, <span class="number">3</span>), activation=<span class="string">'relu'</span>, input_shape=(<span class="number">100</span>, <span class="number">100</span>, <span class="number">3</span>)))</span><br><span class="line">model.add(Conv2D(<span class="number">32</span>, (<span class="number">3</span>, <span class="number">3</span>), activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line">model.add(Dropout(<span class="number">0.25</span>))</span><br><span class="line"></span><br><span class="line">model.add(Conv2D(<span class="number">64</span>, (<span class="number">3</span>, <span class="number">3</span>), activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(Conv2D(<span class="number">64</span>, (<span class="number">3</span>, <span class="number">3</span>), activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>)))</span><br><span class="line">model.add(Dropout(<span class="number">0.25</span>))</span><br><span class="line"></span><br><span class="line">model.add(Flatten())</span><br><span class="line">model.add(Dense(<span class="number">256</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.5</span>))</span><br><span class="line">model.add(Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>))</span><br><span class="line"></span><br><span class="line">sgd = SGD(lr=<span class="number">0.01</span>, decay=<span class="number">1e-6</span>, momentum=<span class="number">0.9</span>, nesterov=<span class="literal">True</span>)</span><br><span class="line">model.compile(loss=<span class="string">'categorical_crossentropy'</span>, optimizer=sgd)</span><br><span class="line"></span><br><span class="line">model.fit(x_train, y_train, batch_size=<span class="number">32</span>, epochs=<span class="number">10</span>)</span><br><span class="line">score = model.evaluate(x_test, y_test, batch_size=<span class="number">32</span>)</span><br></pre></td></tr></table></figure>
 <p>上述样例代码实现的应该是从 32 过滤器起步到 256 最后池化为 10 位输出分类器的 VGG 神经网络，下图则是从 64 到 512 的结构示意图，大体上来说可以分为两个大块，一个是卷积层，一个是池化层</p>
 <p>卷积层通过指定大小的 filter（一般为 3x3，最小）来实现对图片的卷积，通过相比 AlexNet 更小的 filter 可以得到更多的 channel，达到更高的精度</p>
-<p>池化层是对卷积过后的结果进行降采样，上述例子中在 100 <em>100 输入进来后，经过 MaxPooling2D 的池化会得到 50</em> 50 的输出，同样还有 MeanPooling 等其他函数</p>
+<p>池化层是对卷积过后的结果进行降采样，上述例子中在 100 _100 输入进来后，经过 MaxPooling2D 的池化会得到 50_ 50 的输出，同样还有 MeanPooling 等其他函数</p>
 <p>Dropout 可以提高效率，具体参考网上资料</p>
 <p><img src="http://ww1.sinaimg.cn/large/e1ac6bd5gy1fjef22u475j20q809t770.jpg" alt></p>
 <p>下图是本项目定义的 VGGnet 结构，相对上面的样例代码还是有一点区别，主要表现在图片格式以及网络结构上</p>
@@ -473,8 +473,8 @@
 <h2 id="TF-卷积核与-TH-卷积核"><a href="#TF-卷积核与-TH-卷积核" class="headerlink" title="TF 卷积核与 TH 卷积核"></a>TF 卷积核与 TH 卷积核</h2><p>Keras 提供了两套后端，Theano 和 Tensorflow</p>
 <p>二者在实际应用中最常见的错误大概就是输入样本的结构不对了，其应该为：</p>
 <ul>
-<li>“channels_first” – th – （3,128,128）</li>
-<li>“channels_last” –tf – （128,128,3）</li>
+<li>“channels_first” — th — （3,128,128）</li>
+<li>“channels_last” —tf — （128,128,3）</li>
 </ul>
 <p>注意如果没有设置过的话，在所有的层级当中都会默认这个参数为 “channels_last”</p>
 <h2 id="切换后端"><a href="#切换后端" class="headerlink" title="切换后端"></a>切换后端</h2><p>如果你至少运行过一次 Keras，你将在下面的目录下找到 Keras 的配置文件：</p>
@@ -986,7 +986,24 @@
   
 
 
-  <script src="/js/next-boot.js?v=7.1.0"></script>
+  <script src="/js/next-boot.js?v=7.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
   

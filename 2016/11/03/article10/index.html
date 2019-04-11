@@ -16,7 +16,7 @@
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="错误信息：remote: Permission to ProHiryu/Coursera-test.git denied to forever-cactus.fatal: unable to access ‘https://git@github.com/ProHiryu/Coursera-test.git/&amp;#39;: The requested URL returned error: 403 其">
+  <meta name="description" content="错误信息：remote: Permission to ProHiryu/Coursera-test.git denied to forever-cactus.fatal: unable to access ‘https://git@github.com/ProHiryu/Coursera-test.git/‘: The requested URL returned error: 403 其中Pro">
 <meta name="keywords" content="git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="windows 下 Git push 出错">
 <meta property="og:url" content="https://prohiryu.github.io/2016/11/03/article10/index.html">
 <meta property="og:site_name" content="Sic transit gloria mundi">
-<meta property="og:description" content="错误信息：remote: Permission to ProHiryu/Coursera-test.git denied to forever-cactus.fatal: unable to access ‘https://git@github.com/ProHiryu/Coursera-test.git/&amp;#39;: The requested URL returned error: 403 其">
+<meta property="og:description" content="错误信息：remote: Permission to ProHiryu/Coursera-test.git denied to forever-cactus.fatal: unable to access ‘https://git@github.com/ProHiryu/Coursera-test.git/‘: The requested URL returned error: 403 其中Pro">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-05-05T07:18:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="windows 下 Git push 出错">
-<meta name="twitter:description" content="错误信息：remote: Permission to ProHiryu/Coursera-test.git denied to forever-cactus.fatal: unable to access ‘https://git@github.com/ProHiryu/Coursera-test.git/&amp;#39;: The requested URL returned error: 403 其">
+<meta name="twitter:description" content="错误信息：remote: Permission to ProHiryu/Coursera-test.git denied to forever-cactus.fatal: unable to access ‘https://git@github.com/ProHiryu/Coursera-test.git/‘: The requested URL returned error: 403 其中Pro">
 
 
 
@@ -162,7 +162,7 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
@@ -173,7 +173,7 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -440,14 +440,14 @@
       
 
       
-        <p>错误信息：remote: Permission to ProHiryu/Coursera-test.git denied to forever-cactus.<br>fatal: unable to access ‘<a href="https://git@github.com/ProHiryu/Coursera-test.git/&#39;" target="_blank" rel="noopener">https://git@github.com/ProHiryu/Coursera-test.git/&#39;</a>: The requested URL returned error: 403</p>
+        <p>错误信息：remote: Permission to ProHiryu/Coursera-test.git denied to forever-cactus.<br>fatal: unable to access ‘<a href="https://git@github.com/ProHiryu/Coursera-test.git/" target="_blank" rel="noopener">https://git@github.com/ProHiryu/Coursera-test.git/</a>‘: The requested URL returned error: 403</p>
 <p>其中ProHiryu是我的用户名。</p>
 <p>在网上查了很久，大多就是吧Github上面的英文翻译了一下，我折腾了一下午，都快要放弃了，在一个英文网站上看到了一个正确回答，就搞定了。</p>
 <p>首先这篇文章的前提是，你已经在Windows上正确配置了Git，这个网上有大把教程可以查。</p>
 <p>然后你需要在github上已经将公钥导入，具体参考：<a href="https://help.github.com/articles/error-permission-to-user-repo-denied-to-user-other-repo/" target="_blank" rel="noopener">https://help.github.com/articles/error-permission-to-user-repo-denied-to-user-other-repo/</a></p>
 <a id="more"></a>
 <p>如果这样还是出现前面所示的错误的话，那么恭喜你和我一样中招了，接下来我就说下解决办法：</p>
-<p>由于github网站默认支持的是ssh远程登录协议，所以在你用户名密码都相同的情况下，必须先在网站上添加你个人的公钥，但是在实际网络中，未必能够通过https或者http协议访问github网站，这个时候你需要打开local config（就是你要push的git项目中的配置文件），将其种url=<a href="https://MichaelDrogalis@github.com/derekerdmann/lunch_call.git" target="_blank" rel="noopener">https://MichaelDrogalis@github.com/derekerdmann/lunch_call.git</a> 修改为 url=ssh:<a href="mailto://git@github.com" target="_blank" rel="noopener">//git@github.com</a>/derekerdmann/lunch_call.git，没错，就是换了个默认的登录协议，这样就不会出现上述的permission denied的问题了。</p>
+<p>由于github网站默认支持的是ssh远程登录协议，所以在你用户名密码都相同的情况下，必须先在网站上添加你个人的公钥，但是在实际网络中，未必能够通过https或者http协议访问github网站，这个时候你需要打开local config（就是你要push的git项目中的配置文件），将其种url=<a href="https://MichaelDrogalis@github.com/derekerdmann/lunch_call.git" target="_blank" rel="noopener">https://MichaelDrogalis@github.com/derekerdmann/lunch_call.git</a> 修改为 url=ssh://git@github.com/derekerdmann/lunch_call.git，没错，就是换了个默认的登录协议，这样就不会出现上述的permission denied的问题了。</p>
 <p>注意将其中用户名都改为自己的。</p>
 <p>祝你好运~早日掌握git。</p>
 
@@ -914,7 +914,24 @@
   
 
 
-  <script src="/js/next-boot.js?v=7.1.0"></script>
+  <script src="/js/next-boot.js?v=7.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
   
